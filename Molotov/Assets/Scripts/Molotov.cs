@@ -22,7 +22,7 @@ public class Molotov : MonoBehaviour {
 
 	IEnumerator ThrowMolotov()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
               
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
         float molotovInitialSpeed = Mathf.Sqrt((gravity * distanceToTarget) / (Mathf.Sin(2 * throwAngle * Mathf.Deg2Rad)));
@@ -46,10 +46,10 @@ public class Molotov : MonoBehaviour {
             yield return null;
         }
 
-		StartCoroutine(DestroyCoctel());
+		StartCoroutine(DestroyMolotov());
     }  
 
-	IEnumerator DestroyCoctel()
+	IEnumerator DestroyMolotov()
 	{
 		yield return new WaitForSeconds(0.5f);
 		cell.gameObject.GetComponent<Renderer>().material = cellDestroyedMaterial;
