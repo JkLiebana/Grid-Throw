@@ -34,13 +34,35 @@ public class PlayerController : MonoBehaviour {
 
 	public void SetNewTarget(Transform target)
 	{
+
+		if(!CanCharacterMoveOnCurrentTurn())
+		{
+			return;
+		}
+
 		Vector3 distanceCharacterToTarget = target.position - CurrentCharacterSelected.transform.position;
 		distanceCharacterToTarget.y = 0;
+		var finalDistanceMagnitude = (int) Mathf.Abs(distanceCharacterToTarget.magnitude);
 
-		if((int) Mathf.Abs(distanceCharacterToTarget.magnitude) <= CurrentCharacterSelected.maxCellsMovement)
+		if(finalDistanceMagnitude <= CurrentCharacterSelected.maxCellsMovement)
 		{
 			currentCharacterTarget = target;
 			movingCharacter = true;
+			MainManager.Instance._UIManager.EnableMovingText();
+			CurrentCharacterSelected.currentMovementsDone += finalDistanceMagnitude;
+		}
+	}
+
+	bool CanCharacterMoveOnCurrentTurn()
+	{
+		return CurrentCharacterSelected.currentMovementsDone < CurrentCharacterSelected.maxCellsMovement;
+	}
+
+	public void ResetMovements()
+	{
+		for(int i = 0; i < AliveCharacters.Count; i++)
+		{
+			AliveCharacters[i].currentMovementsDone = 0;
 		}
 	}
 
@@ -92,6 +114,7 @@ public class PlayerController : MonoBehaviour {
 			finalPosition.y = 0;
 			CurrentCharacterSelected.gameObject.transform.position = finalPosition;
 			movingCharacter = false;
+			MainManager.Instance._UIManager.DisableMovingText();
 		}
 	}
 

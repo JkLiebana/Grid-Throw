@@ -5,12 +5,21 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public Text farText, closeText;
+	public Text farText, closeText, turnsNumber, movingText;
 
+
+	
 	public void Initialize()
 	{
 		DisableCloseText();
 		DisableFarText();
+		DisableMovingText();
+	}
+
+	public void NextTurn()
+	{
+		MainManager.Instance.NextTurn();
+		turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
 	}
 	public void EnableFarText()
 	{
@@ -34,6 +43,17 @@ public class UIManager : MonoBehaviour {
 	{
 		closeText.enabled = false;
 	}
+
+	public void EnableMovingText()
+	{
+		movingText.enabled = true;
+	}
+
+	public void DisableMovingText()
+	{
+		movingText.enabled = false;
+	}
+
 
 	IEnumerator Wait(int option)
 	{

@@ -8,6 +8,8 @@ public class Character : MonoBehaviour {
 	public float speed;
 	public int maxCellsMovement;
 
+	public int currentMovementsDone;
+
 	void OnMouseDown()
 	{
 		MainManager.Instance._PlayerController.SetCurrentCharacter(this);

@@ -7,8 +7,9 @@ public class MainManager : Singleton<MainManager>{
 
 	public MapGenerator _MapGenerator;
 	public UIManager _UIManager;
-
 	public PlayerController _PlayerController;
+
+	public int CurrentTurn = 0;
 
 	void Start()
 	{
@@ -16,6 +17,14 @@ public class MainManager : Singleton<MainManager>{
 		_UIManager.Initialize();
 		_PlayerController.Initialize();
 	}	
+
+
+	public void NextTurn()
+	{
+		CurrentTurn++;
+
+		_PlayerController.ResetMovements();
+	}
 
 
 }
