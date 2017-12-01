@@ -5,21 +5,31 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public Text farText, closeText, turnsNumber, movingText;
+	public Text farText, closeText, turnsNumber, movingText, enemyTurnText;
 
-
+	public Text[] CharacterSheetTexts;
 	
 	public void Initialize()
 	{
 		DisableCloseText();
 		DisableFarText();
 		DisableMovingText();
+		DisableEnemyTurnText();
 	}
 
 	public void NextTurn()
 	{
-		MainManager.Instance.NextTurn();
-		turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
+		if(MainManager.Instance.EnemyTurn)
+			return;
+			
+		MainManager.Instance.StartEnemyTurn();
+		EnableEnemyTurnText();
+	}
+
+	public void RefreshCharacterInfo()
+	{
+		CharacterSheetTexts[0].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.name;
+		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
 	}
 	public void EnableFarText()
 	{
@@ -54,6 +64,15 @@ public class UIManager : MonoBehaviour {
 		movingText.enabled = false;
 	}
 
+	public void EnableEnemyTurnText()
+	{
+		enemyTurnText.enabled = true;
+	}
+
+	public void DisableEnemyTurnText()
+	{
+		enemyTurnText.enabled = false;
+	}
 
 	IEnumerator Wait(int option)
 	{

@@ -6,6 +6,7 @@ public class Tile : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		MainManager.Instance._PlayerController.SetNewTarget(gameObject.transform);
+		if(!MainManager.Instance.EnemyTurn)
+			MainManager.Instance._PlayerController.SetNewTarget(gameObject.transform);
 	}
 }

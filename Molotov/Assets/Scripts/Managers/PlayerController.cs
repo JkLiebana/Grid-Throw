@@ -22,14 +22,22 @@ public class PlayerController : MonoBehaviour {
 			var newCharacter = Instantiate(AvailableCharacters[i].CharacterPrefab, Vector3.zero, Quaternion.identity);
 			
 			newCharacter.gameObject.transform.position = new Vector3(0, 0, i);
+			newCharacter.name = AvailableCharacters[i].name;
+
 			newCharacter.GetComponent<Renderer>().material = AvailableCharacters[i].Material;
 			newCharacter.GetComponent<Character>().speed = AvailableCharacters[i].speed;
 			newCharacter.GetComponent<Character>().maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
+			newCharacter.GetComponent<Character>().movementsLeft = AvailableCharacters[i].maxCellsMovement;
+			
+			newCharacter.GetComponent<Character>().name = AvailableCharacters[i].name;
+			
 
 			AliveCharacters.Add(newCharacter.GetComponent<Character>());
 		}
 
 		CurrentCharacterSelected = AliveCharacters[0];
+
+		MainManager.Instance._UIManager.RefreshCharacterInfo();
 	}
 
 	public void SetNewTarget(Transform target)
@@ -49,20 +57,21 @@ public class PlayerController : MonoBehaviour {
 			currentCharacterTarget = target;
 			movingCharacter = true;
 			MainManager.Instance._UIManager.EnableMovingText();
-			CurrentCharacterSelected.currentMovementsDone += finalDistanceMagnitude;
+			CurrentCharacterSelected.movementsLeft -= finalDistanceMagnitude;
+			MainManager.Instance._UIManager.RefreshCharacterInfo();		
 		}
 	}
 
 	bool CanCharacterMoveOnCurrentTurn()
 	{
-		return CurrentCharacterSelected.currentMovementsDone < CurrentCharacterSelected.maxCellsMovement;
+		return CurrentCharacterSelected.movementsLeft > 0;
 	}
 
 	public void ResetMovements()
 	{
 		for(int i = 0; i < AliveCharacters.Count; i++)
 		{
-			AliveCharacters[i].currentMovementsDone = 0;
+			AliveCharacters[i].movementsLeft = AliveCharacters[i].maxCellsMovement;
 		}
 	}
 
@@ -72,6 +81,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		CurrentCharacterSelected = character;
+		MainManager.Instance._UIManager.RefreshCharacterInfo();
 	}
 
 	void Update () {

@@ -8,11 +8,12 @@ public class Character : MonoBehaviour {
 	public float speed;
 	public int maxCellsMovement;
 
-	public int currentMovementsDone;
+	public int movementsLeft;
 
 	void OnMouseDown()
 	{
-		MainManager.Instance._PlayerController.SetCurrentCharacter(this);
+		if(!MainManager.Instance.EnemyTurn)
+			MainManager.Instance._PlayerController.SetCurrentCharacter(this);
 	}
 
 }

@@ -11,6 +11,8 @@ public class MainManager : Singleton<MainManager>{
 
 	public int CurrentTurn = 0;
 
+	public bool EnemyTurn = false;
+
 	void Start()
 	{
 		_MapGenerator.Initialize();
@@ -19,11 +21,28 @@ public class MainManager : Singleton<MainManager>{
 	}	
 
 
+	public void StartEnemyTurn()
+	{
+		EnemyTurn = true;
+		StartCoroutine(ProcessEnemyTurn());
+	}
+
+
+	IEnumerator ProcessEnemyTurn()
+	{
+		yield return new WaitForSeconds(3);
+		NextTurn();
+	}
+
 	public void NextTurn()
 	{
 		CurrentTurn++;
-
+		EnemyTurn = false;
+		_UIManager.DisableEnemyTurnText();
 		_PlayerController.ResetMovements();
+
+		_UIManager.turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
+		_UIManager.RefreshCharacterInfo();
 	}
 
 
