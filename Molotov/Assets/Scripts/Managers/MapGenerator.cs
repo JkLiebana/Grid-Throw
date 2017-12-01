@@ -6,12 +6,10 @@ public class MapGenerator : MonoBehaviour {
 
 	public int width, height;
 	public GameObject TileMap;
-	public GameObject Player;
-
 	public GameObject Map;
 	
 
-	void Start()
+	public void Initialize()
 	{
 		GenerateMap();
 	}
@@ -26,13 +24,11 @@ public class MapGenerator : MonoBehaviour {
 
 				var cell = Instantiate(TileMap);
 
-				tilePosition = new Vector3(i + (i* 0.1f), -1f, j + (j* 0.1f));
+				tilePosition = new Vector3(i, -1f, j);
 				cell.transform.position = tilePosition;
 				cell.transform.SetParent(Map.transform, true);
 
 			}
 		}
-
-		var player = Instantiate(Player, new Vector3(width/2, 0f, height/2), Quaternion.identity);
 	}
 }

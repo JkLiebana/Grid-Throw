@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Molotov : MonoBehaviour {
 
+	public GameObject FirePS;
 	public Transform target;
 	public float speed = 2;
 	public float throwAngle = 45f;
@@ -53,7 +54,6 @@ public class Molotov : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(0.5f);
 		cell.gameObject.GetComponent<Renderer>().material = cellDestroyedMaterial;
-
 		Destroy(this.gameObject);
 	}
 }

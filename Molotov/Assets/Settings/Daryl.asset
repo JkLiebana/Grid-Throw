@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fea5e5624ed7391439d07acba0707a1f, type: 3}
+  m_Name: Daryl
+  m_EditorClassIdentifier: 
+  Name: Daryl
+  CharacterPrefab: {fileID: 1704122467467332, guid: 03cf2cf9a5674364cb70841ab37a04d3,
+    type: 2}
+  maxCellsMovement: 1
+  speed: 4
+  Material: {fileID: 2100000, guid: 4c70f87d80ecf5541b4a4371432fc3d5, type: 2}

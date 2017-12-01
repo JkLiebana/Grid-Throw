@@ -22,10 +22,10 @@ GameObject:
   - component: {fileID: 33996211082456284}
   - component: {fileID: 65815292903582364}
   - component: {fileID: 23035390976700836}
-  - component: {fileID: 114345489436609790}
+  - component: {fileID: 114026502394174504}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,7 +94,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114345489436609790
+--- !u!114 &114026502394174504
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -102,13 +102,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1704122467467332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79a78bc1eaa1922439572bc86f7059ad, type: 3}
+  m_Script: {fileID: 11500000, guid: f2b22cea26e9e824eafd3fc96a1e8fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MolotovPrefab: {fileID: 1654702769306194, guid: e8991ed710639e24c8a1b07575b3d84b,
-    type: 2}
-  MolotovInstance: {fileID: 0}
-  movingCharacter: 0
-  throwingMolotov: 0
-  speed: 4
-  currentCharacterTarget: {fileID: 0}
+  Name: 
+  speed: 0

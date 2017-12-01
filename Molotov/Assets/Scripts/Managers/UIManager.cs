@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour {
 
 	public Text farText, closeText;
 
-	void Start()
+	public void Initialize()
 	{
 		DisableCloseText();
 		DisableFarText();

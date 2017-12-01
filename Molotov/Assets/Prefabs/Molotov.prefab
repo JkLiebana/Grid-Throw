@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643430c1738b5e046908d429034b18f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FirePS: {fileID: 1264196030788352, guid: f6d7d5a3042055241b6b4683fb5e44f2, type: 2}
   target: {fileID: 0}
   speed: 2
   throwAngle: 70
