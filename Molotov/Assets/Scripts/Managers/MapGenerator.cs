@@ -7,6 +7,8 @@ public class MapGenerator : MonoBehaviour {
 	public int width, height;
 	public GameObject TileMap;
 	public GameObject Map;
+
+	public List<Tile> Tiles;
 	
 
 	public void Initialize()
@@ -28,6 +30,10 @@ public class MapGenerator : MonoBehaviour {
 				cell.transform.position = tilePosition;
 				cell.transform.SetParent(Map.transform, true);
 
+				cell.GetComponent<Tile>().xCoord = i;
+				cell.GetComponent<Tile>().yCoord = j;			
+
+				Tiles.Add(cell.GetComponent<Tile>());
 			}
 		}
 	}

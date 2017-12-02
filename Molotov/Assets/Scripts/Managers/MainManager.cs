@@ -21,19 +21,15 @@ public class MainManager : Singleton<MainManager>{
 		_PlayerController.Initialize();
 		_EnemyController.Initialize();
 	}	
-
-
 	public void StartEnemyTurn()
 	{
 		EnemyTurn = true;
 	}
-
 	public void FinishEnemyTurn()
 	{
 		EnemyTurn = false;
 		NextTurn();
 	}
-
 	IEnumerator ProcessEnemyTurn()
 	{
 		yield return new WaitForSeconds(3);

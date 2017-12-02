@@ -5,18 +5,27 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	public GameObject MolotovPrefab, MolotovInstance;
-	public bool movingCharacter = false, throwingMolotov = false;
-	public Transform currentCharacterTarget;
+#region Public Variables
+	public GameObject MolotovPrefab;
+	public bool movingCharacter = false;
 	public Character CurrentCharacterSelected;
-
 	public List<CharacterInfo> AvailableCharacters; 
-
+#endregion
+#region Private Variables
 	private List<Character> AliveCharacters;
-
+	private Transform currentCharacterTarget;
+	private GameObject MolotovInstance;
+#endregion
+	
 	public void Initialize()
 	{
 		AliveCharacters = new List<Character>();
+
+		InstantiateCharacters();		
+	}
+
+	private void InstantiateCharacters()
+	{
 		for(int i = 0; i < AvailableCharacters.Count; i++)
 		{
 			var newCharacter = Instantiate(AvailableCharacters[i].CharacterPrefab, Vector3.zero, Quaternion.identity);
@@ -25,66 +34,22 @@ public class PlayerController : MonoBehaviour {
 			newCharacter.name = AvailableCharacters[i].name;
 
 			newCharacter.GetComponent<Renderer>().material = AvailableCharacters[i].Material;
-			newCharacter.GetComponent<Character>().speed = AvailableCharacters[i].speed;
-			newCharacter.GetComponent<Character>().maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
-			newCharacter.GetComponent<Character>().movementsLeft = AvailableCharacters[i].maxCellsMovement;
-			
-			newCharacter.GetComponent<Character>().name = AvailableCharacters[i].name;
-			
 
-			AliveCharacters.Add(newCharacter.GetComponent<Character>());
+			Character character = newCharacter.GetComponent<Character>();
+			character.name = AvailableCharacters[i].name;			
+			character.speed = AvailableCharacters[i].speed;
+			character.maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
+			character.movementsLeft = AvailableCharacters[i].maxCellsMovement;
+			
+			AliveCharacters.Add(character);
 		}
 
 		CurrentCharacterSelected = AliveCharacters[0];
-
 		MainManager.Instance._UIManager.RefreshCharacterInfo();
 	}
 
-	public void SetNewTarget(Transform target)
+	void Update () 
 	{
-		Vector3 distanceCharacterToTarget = target.position - CurrentCharacterSelected.transform.position;
-		distanceCharacterToTarget.y = 0;
-		var finalDistanceMagnitude = (int) Mathf.Abs(distanceCharacterToTarget.magnitude);
-
-		if(!CanCharacterMoveOnCurrentTurn(finalDistanceMagnitude))
-		{
-			return;
-		}
-
-		if(finalDistanceMagnitude <= CurrentCharacterSelected.maxCellsMovement)
-		{
-			currentCharacterTarget = target;
-			movingCharacter = true;
-			MainManager.Instance._UIManager.EnableMovingText();
-			CurrentCharacterSelected.movementsLeft -= finalDistanceMagnitude;
-			MainManager.Instance._UIManager.RefreshCharacterInfo();		
-		}
-	}
-
-	bool CanCharacterMoveOnCurrentTurn(int distance)
-	{
-		return CurrentCharacterSelected.movementsLeft - distance >= 0;
-	}
-
-	public void ResetMovements()
-	{
-		for(int i = 0; i < AliveCharacters.Count; i++)
-		{
-			AliveCharacters[i].movementsLeft = AliveCharacters[i].maxCellsMovement;
-		}
-	}
-
-	public void SetCurrentCharacter(Character character)
-	{
-		if(movingCharacter)
-			return;
-
-		CurrentCharacterSelected = character;
-		MainManager.Instance._UIManager.RefreshCharacterInfo();
-	}
-
-	void Update () {
-
 		Movement();
 
 		if(Input.GetMouseButtonDown(1))
@@ -100,7 +65,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private Vector3 positionWhileMovement;
-	void Movement()
+	private void Movement()
 	{
 		if(!movingCharacter)
 			return;
@@ -112,7 +77,72 @@ public class PlayerController : MonoBehaviour {
 		CheckIfPositionReached();
 	}
 
-	void CheckIfPositionReached()
+#region Current Character and Target Setting - External Access
+
+	public void SetCurrentCharacter(Character character)
+	{
+		if(movingCharacter)
+			return;
+
+		CurrentCharacterSelected = character;
+		MainManager.Instance._UIManager.RefreshCharacterInfo();
+	}
+
+	public void SetNewTarget(Transform target)
+	{
+		if(CheckIfTargetOccupied(target.position))
+		{
+			MainManager.Instance._UIManager.EnableOccupiedText();
+			return;
+		}
+
+		Vector3 distanceCharacterToTarget = target.position - CurrentCharacterSelected.transform.position;
+		distanceCharacterToTarget.y = 0;
+		var finalDistanceMagnitude = (int) Mathf.Abs(distanceCharacterToTarget.magnitude);
+
+		if(!CanCharacterMoveOnCurrentTurn(finalDistanceMagnitude))
+			return;
+
+		if(finalDistanceMagnitude <= CurrentCharacterSelected.maxCellsMovement)
+		{
+			AssignTargetAndStartMovement(target, finalDistanceMagnitude);
+			
+		}
+	}
+
+	public void ResetMovements()
+	{
+		for(int i = 0; i < AliveCharacters.Count; i++)
+		{
+			AliveCharacters[i].movementsLeft = AliveCharacters[i].maxCellsMovement;
+		}
+	}
+#endregion
+	
+#region Internal Movement Utilities
+	private bool CheckIfTargetOccupied(Vector3 possibleTargetPosition)
+	{
+		var possibleTargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == possibleTargetPosition.x && tile.yCoord == possibleTargetPosition.z);
+		return possibleTargetTile.isOccupied;
+	}
+
+	private bool CanCharacterMoveOnCurrentTurn(int distance)
+	{
+		return CurrentCharacterSelected.movementsLeft - distance >= 0;
+	}
+
+	private void AssignTargetAndStartMovement(Transform target, int finalDistanceMagnitude)
+	{
+		currentCharacterTarget = target;
+		CurrentCharacterSelected.movementsLeft -= finalDistanceMagnitude;
+		
+		movingCharacter = true;
+
+		MainManager.Instance._UIManager.EnableMovingText();		
+		MainManager.Instance._UIManager.RefreshCharacterInfo();		
+	}
+
+	private void CheckIfPositionReached()
 	{
 		Vector3 distance = CurrentCharacterSelected.transform.position - currentCharacterTarget.transform.position;
 		distance.y = 0;
@@ -127,7 +157,10 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void CheckIfPossibleLaunch(Transform cell)
+#endregion
+
+#region Internal Attack Utilities
+	private void CheckIfPossibleLaunch(Transform cell)
 	{
 		float distance = Vector3.Distance(cell.position, CurrentCharacterSelected.transform.position);
 		if(distance <= 2)
@@ -143,9 +176,12 @@ public class PlayerController : MonoBehaviour {
 			ThrowMolotov(cell);
 		}
 	}
-	void ThrowMolotov(Transform molotov)
+
+	private void ThrowMolotov(Transform molotov)
 	{
 		MolotovInstance = Instantiate(MolotovPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
 		MolotovInstance.GetComponent<Molotov>().cell = molotov.gameObject;
 	}
+#endregion
+
 }

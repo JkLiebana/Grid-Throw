@@ -5,14 +5,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public Text farText, closeText, turnsNumber, movingText, enemyTurnText;
+	public Text farText, closeText, turnsNumber, movingText, enemyTurnText, occupiedText;
 
 	public Text[] CharacterSheetTexts;
 	
 	public void Initialize()
 	{
-		DisableCloseText();
-		DisableFarText();
+		DisableAllWarnings();
 		DisableMovingText();
 		DisableEnemyTurnText();
 	}
@@ -31,16 +30,12 @@ public class UIManager : MonoBehaviour {
 		CharacterSheetTexts[0].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.name;
 		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
 	}
+
+#region Enable Text
 	public void EnableFarText()
 	{
 		farText.enabled = true;
 		StartCoroutine(Wait(0));
-	}
-
-	public void DisableFarText()
-	{
-
-		farText.enabled = false;
 	}
 
 	public void EnableCloseText()
@@ -49,9 +44,10 @@ public class UIManager : MonoBehaviour {
 		StartCoroutine(Wait(1));		
 	}
 
-	public void DisableCloseText()
+	public void EnableOccupiedText()
 	{
-		closeText.enabled = false;
+		occupiedText.enabled = true;
+		StartCoroutine(Wait(1));		
 	}
 
 	public void EnableMovingText()
@@ -59,14 +55,24 @@ public class UIManager : MonoBehaviour {
 		movingText.enabled = true;
 	}
 
-	public void DisableMovingText()
-	{
-		movingText.enabled = false;
-	}
-
 	public void EnableEnemyTurnText()
 	{
 		enemyTurnText.enabled = true;
+	}
+
+#endregion
+	
+#region Disable Text
+	public void DisableAllWarnings()
+	{
+		occupiedText.enabled = false;
+		closeText.enabled = false;
+		farText.enabled = false;		
+	}	
+
+	public void DisableMovingText()
+	{
+		movingText.enabled = false;
 	}
 
 	public void DisableEnemyTurnText()
@@ -74,17 +80,11 @@ public class UIManager : MonoBehaviour {
 		enemyTurnText.enabled = false;
 	}
 
-	IEnumerator Wait(int option)
+	private IEnumerator Wait(int option)
 	{
 		yield return new WaitForSeconds(1);
-
-		if(option == 0)
-		{
-			DisableFarText();
-		}
-		else{
-			DisableCloseText();
-		}
+		DisableAllWarnings();
 	}
+#endregion
 
 }

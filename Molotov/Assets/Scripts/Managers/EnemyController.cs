@@ -4,28 +4,35 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
 
+#region Public Variables
 	public List<EnemyInfo> Enemies;
-	public List<Enemy> AliveEnemies;
-
 	public Enemy CurrentEnemy;
 
-	private bool movingEnemy = false;
+#endregion
+
+#region Private Variables
+	private List<Enemy> AliveEnemies;
+	private Vector3 CurrentTarget;
+	private bool MovingEnemy = false;
+
+#endregion
+	
 
 	public void Initialize()
 	{
 		SpawnInitialEnemies();
 	}
 
-
 	void SpawnInitialEnemies()
 	{
 		AliveEnemies = new List<Enemy>();
-		Vector3 position = new Vector3(MainManager.Instance._MapGenerator.width, 0, MainManager.Instance._MapGenerator.height);
+
+		Vector3 EnemyPosition = new Vector3(MainManager.Instance._MapGenerator.width, 0, MainManager.Instance._MapGenerator.height);
 		for(int i = 0; i < Enemies.Count; i++)
 		{
-			position.z = i;
+			EnemyPosition.z = i;
 			
-			var enemy = Instantiate(Enemies[i].EnemyPrefab, position, Quaternion.identity).GetComponent<Enemy>();
+			var enemy = Instantiate(Enemies[i].EnemyPrefab, EnemyPosition, Quaternion.identity).GetComponent<Enemy>();
 			
 			enemy.speed = Enemies[i].speed;
 			enemy.life = Enemies[i].Life;
@@ -41,7 +48,7 @@ public class EnemyController : MonoBehaviour {
 		if(!MainManager.Instance.EnemyTurn)
 			return;
 		
-		if(movingEnemy)
+		if(MovingEnemy)
 		{
 			MoveEnemy();
 		}
@@ -52,46 +59,23 @@ public class EnemyController : MonoBehaviour {
 	}
 
 	private Vector3 positionWhileMovement;
-	Vector3 currentTarget;
-	void MoveEnemy()
+	private void MoveEnemy()
 	{	
-		positionWhileMovement = Vector3.MoveTowards(CurrentEnemy.transform.position, currentTarget, CurrentEnemy.speed * Time.deltaTime);
+		positionWhileMovement = Vector3.MoveTowards(CurrentEnemy.transform.position, CurrentTarget, CurrentEnemy.speed * Time.deltaTime);
 		positionWhileMovement.y = 0;
 		
 		CurrentEnemy.transform.position = positionWhileMovement;
 		CheckIfPositionReached();		
 	}
 
-	void CheckIfPositionReached()
-	{
-		Vector3 distance = CurrentEnemy.transform.position - currentTarget;
-		distance.y = 0;
-
-		if(distance.magnitude <= 0.01f)
-		{	
-			Vector3 finalPosition = currentTarget;
-			finalPosition.y = 0;
-			CurrentEnemy.gameObject.transform.position = finalPosition;
-			CurrentEnemy.alreadyMoved = true;
-			movingEnemy = false;
-		}
-	}
-
-	public void ResetEnemies()
-	{
-		for(int i = 0; i < AliveEnemies.Count; i++)
-		{
-			AliveEnemies[i].alreadyMoved = false;
-		}
-	}
-	void SetCurrentEnemyMoving()
+	private void SetCurrentEnemyMoving()
 	{
 		for(int i = 0; i < Enemies.Count; i++)
 		{
 			if(!AliveEnemies[i].alreadyMoved)
 			{
 				CurrentEnemy = AliveEnemies[i];
-				movingEnemy = true;
+				MovingEnemy = true;
 				SetNewTarget();
 				
 				return;
@@ -100,16 +84,52 @@ public class EnemyController : MonoBehaviour {
 		MainManager.Instance.FinishEnemyTurn();
 	}
 
-	void SetNewTarget()
+	private void SetNewTarget()
 	{
-		Vector3 playerPos = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform.position;
-		Vector3 temp = CurrentEnemy.transform.position - playerPos;
+		Vector3 CurrentCharacterSelected = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform.position;
+		Vector3 DistanceToCharacter = CurrentEnemy.transform.position - CurrentCharacterSelected;
 				
-		temp.Normalize();
-		temp.x = Mathf.RoundToInt(temp.x);
-		temp.z = Mathf.RoundToInt(temp.z);
-								
-		currentTarget.x = CurrentEnemy.transform.position.x - (temp.x * CurrentEnemy.maxCellsMovement);
-		currentTarget.z = CurrentEnemy.transform.position.z - (temp.z * CurrentEnemy.maxCellsMovement);
+		DistanceToCharacter.Normalize();
+		DistanceToCharacter.x = Mathf.RoundToInt(DistanceToCharacter.x);
+		DistanceToCharacter.z = Mathf.RoundToInt(DistanceToCharacter.z);
+
+		CurrentTarget.x = CurrentEnemy.transform.position.x - (DistanceToCharacter.x * CurrentEnemy.maxCellsMovement);
+		CurrentTarget.z = CurrentEnemy.transform.position.z - (DistanceToCharacter.z * CurrentEnemy.maxCellsMovement);
+
+		var TargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == CurrentTarget.x && tile.yCoord == CurrentTarget.z);
+
+		if(TargetTile.isOccupied)
+		{
+			MovingEnemy = false;
+			CurrentEnemy.alreadyMoved = true;
+			return;
+		}	
 	}
+
+	private void CheckIfPositionReached()
+	{
+		Vector3 DistanceToTarget = CurrentEnemy.transform.position - CurrentTarget;
+		DistanceToTarget.y = 0;
+
+		if(DistanceToTarget.magnitude <= 0.01f)
+		{	
+			Vector3 finalPosition = CurrentTarget;
+			finalPosition.y = 0;
+
+			CurrentEnemy.gameObject.transform.position = finalPosition;
+			CurrentEnemy.alreadyMoved = true;
+			MovingEnemy = false;
+		}
+	}
+
+#region External Access
+	public void ResetEnemies()
+	{
+		for(int i = 0; i < AliveEnemies.Count; i++)
+		{
+			AliveEnemies[i].alreadyMoved = false;
+		}
+	}
+#endregion
+
 }
