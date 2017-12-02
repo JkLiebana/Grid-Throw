@@ -8,6 +8,7 @@ public class MainManager : Singleton<MainManager>{
 	public MapGenerator _MapGenerator;
 	public UIManager _UIManager;
 	public PlayerController _PlayerController;
+	public EnemyController _EnemyController;
 
 	public int CurrentTurn = 0;
 
@@ -18,15 +19,20 @@ public class MainManager : Singleton<MainManager>{
 		_MapGenerator.Initialize();
 		_UIManager.Initialize();
 		_PlayerController.Initialize();
+		_EnemyController.Initialize();
 	}	
 
 
 	public void StartEnemyTurn()
 	{
 		EnemyTurn = true;
-		StartCoroutine(ProcessEnemyTurn());
 	}
 
+	public void FinishEnemyTurn()
+	{
+		EnemyTurn = false;
+		NextTurn();
+	}
 
 	IEnumerator ProcessEnemyTurn()
 	{
@@ -43,6 +49,7 @@ public class MainManager : Singleton<MainManager>{
 
 		_UIManager.turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
 		_UIManager.RefreshCharacterInfo();
+		_EnemyController.ResetEnemies();
 	}
 
 

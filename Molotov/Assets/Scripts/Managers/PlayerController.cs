@@ -42,15 +42,14 @@ public class PlayerController : MonoBehaviour {
 
 	public void SetNewTarget(Transform target)
 	{
-
-		if(!CanCharacterMoveOnCurrentTurn())
-		{
-			return;
-		}
-
 		Vector3 distanceCharacterToTarget = target.position - CurrentCharacterSelected.transform.position;
 		distanceCharacterToTarget.y = 0;
 		var finalDistanceMagnitude = (int) Mathf.Abs(distanceCharacterToTarget.magnitude);
+
+		if(!CanCharacterMoveOnCurrentTurn(finalDistanceMagnitude))
+		{
+			return;
+		}
 
 		if(finalDistanceMagnitude <= CurrentCharacterSelected.maxCellsMovement)
 		{
@@ -62,9 +61,9 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	bool CanCharacterMoveOnCurrentTurn()
+	bool CanCharacterMoveOnCurrentTurn(int distance)
 	{
-		return CurrentCharacterSelected.movementsLeft > 0;
+		return CurrentCharacterSelected.movementsLeft - distance >= 0;
 	}
 
 	public void ResetMovements()

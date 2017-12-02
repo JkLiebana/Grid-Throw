@@ -53,6 +53,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Character.cs" />
      <Compile Include="Assets\Scripts\CharacterInfo.cs" />
+     <Compile Include="Assets\Scripts\Enemy.cs" />
+     <Compile Include="Assets\Scripts\EnemyInfo.cs" />
+     <Compile Include="Assets\Scripts\Managers\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Managers\MainManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MapGenerator.cs" />
      <Compile Include="Assets\Scripts\Managers\PlayerController.cs" />
