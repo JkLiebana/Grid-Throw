@@ -17,4 +17,5 @@ MonoBehaviour:
   Name: Rick
   Speed: 5
   Life: 5
-  maxCellsMovement: 10
+  Damage: 1
+  maxCellsMovement: 2

@@ -28,19 +28,21 @@ public class PlayerController : MonoBehaviour {
 
 	private void InstantiateCharacters()
 	{
+		Character character;
+
 		for(int i = 0; i < AvailableCharacters.Count; i++)
 		{
 			var newCharacter = Instantiate(AvailableCharacters[i].CharacterPrefab, Vector3.zero, Quaternion.identity);
 			
-			newCharacter.gameObject.transform.position = new Vector3(0, 0, i);
+			newCharacter.transform.position = new Vector3(0, 0, i);
 			newCharacter.name = AvailableCharacters[i].name;
 
 			newCharacter.GetComponent<Renderer>().material = AvailableCharacters[i].Material;
 
-			Character character = newCharacter.GetComponent<Character>();
-			character.name = AvailableCharacters[i].Name;			
+			character = newCharacter.GetComponent<Character>();
 			character.Speed = AvailableCharacters[i].Speed;
 			character.Life = AvailableCharacters[i].Life;
+			character.Damage = AvailableCharacters[i].Damage;
 			character.maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
 			character.movementsLeft = AvailableCharacters[i].maxCellsMovement;
 			
@@ -53,9 +55,14 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () 
 	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			Application.Quit();
+		}
+
 		if(MainManager.Instance.isGameOver)
 			return;
-			
+
 		Movement();
 
 		if(Input.GetMouseButtonDown(1))
@@ -166,9 +173,9 @@ public class PlayerController : MonoBehaviour {
 #endregion
 
 #region Internal Attack Utilities
-	private void CheckIfPossibleLaunch(Transform cell)
+	private void CheckIfPossibleLaunch(Transform target)
 	{
-		float distance = Vector3.Distance(cell.position, CurrentCharacterSelected.transform.position);
+		float distance = Vector3.Distance(target.position, CurrentCharacterSelected.transform.position);
 		if(distance <= 2)
 		{
 			MainManager.Instance._UIManager.EnableCloseText();
@@ -179,14 +186,14 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
-			ThrowMolotov(cell);
+			ThrowMolotov(target);
 		}
 	}
 
-	private void ThrowMolotov(Transform molotov)
+	private void ThrowMolotov(Transform target)
 	{
 		MolotovInstance = Instantiate(MolotovPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
-		MolotovInstance.GetComponent<Molotov>().cell = molotov.gameObject;
+		MolotovInstance.GetComponent<Molotov>().Initialize(target, CurrentCharacterSelected.Damage);
 	}
 #endregion
 

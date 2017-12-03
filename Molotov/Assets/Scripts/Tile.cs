@@ -26,7 +26,6 @@ public class Tile : MonoBehaviour {
 		{
 			isOccupiedByEnemy = true;
 		}
-		
 	}
 
 	void OnTriggerExit(Collider other)

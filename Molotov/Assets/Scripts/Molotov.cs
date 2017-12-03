@@ -10,14 +10,15 @@ public class Molotov : MonoBehaviour {
 	public float throwAngle = 45f;
 	public float gravity = 9.8f;
 
+	private int Damage;
 
 	public Material cellDestroyedMaterial;
-	public GameObject cell;
-
 	
-	void Start()
+
+	public void Initialize(Transform _target, int characterDamage)
 	{
-		target = cell.transform;
+		target = _target;
+		Damage = characterDamage;
 		StartCoroutine(ThrowMolotov());
 	}
 
@@ -53,7 +54,13 @@ public class Molotov : MonoBehaviour {
 	IEnumerator DestroyMolotov()
 	{
 		yield return new WaitForSeconds(0.5f);
-		cell.gameObject.GetComponent<Renderer>().material = cellDestroyedMaterial;
+		target.gameObject.GetComponent<Renderer>().material = cellDestroyedMaterial;
+		
+		if(target.gameObject.GetComponent<Enemy>())
+		{
+			target.gameObject.GetComponent<Enemy>().RecieveDamage(Damage);
+		}
+
 		Destroy(this.gameObject);
 	}
 }

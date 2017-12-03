@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Character : MonoBehaviour {
 
-	public string Name;
 	public float Speed;
 	public int Life;
+	public int Damage;
 	public int maxCellsMovement;
-
 	public int movementsLeft;
 
 	void OnMouseDown()
@@ -28,13 +27,12 @@ public class Character : MonoBehaviour {
 
 			if(MainManager.Instance._PlayerController.AliveCharacters.Count <= 0)
 			{
-
 				MainManager.Instance.GameOver();
 				Destroy(this.gameObject);
 				return;
 			}
+			
 			MainManager.Instance._PlayerController.CurrentCharacterSelected = MainManager.Instance._PlayerController.AliveCharacters[0];
-
 			Destroy(this.gameObject);
 		}
 		else

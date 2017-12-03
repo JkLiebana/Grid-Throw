@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Life: 3
   Movements: 1
-  speed: 5
+  Speed: 2
   Damage: 2
   EnemyPrefab: {fileID: 1081424464692966, guid: b90db21617580074abb2856df039ef4a,
     type: 2}

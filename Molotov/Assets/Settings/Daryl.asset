@@ -16,5 +16,6 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: 4c70f87d80ecf5541b4a4371432fc3d5, type: 2}
   Name: Daryl
   Speed: 6
-  Life: 4
-  maxCellsMovement: 10
+  Life: 10
+  Damage: 1
+  maxCellsMovement: 1

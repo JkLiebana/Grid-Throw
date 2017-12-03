@@ -16,9 +16,7 @@ public class EnemyController : MonoBehaviour {
 	private bool MovingEnemy = false;
 	private bool EnemyAttacking = false;
 	
-
-#endregion
-	
+#endregion	
 
 	public void Initialize()
 	{
@@ -36,11 +34,11 @@ public class EnemyController : MonoBehaviour {
 			
 			var enemy = Instantiate(Enemies[i].EnemyPrefab, EnemyPosition, Quaternion.identity).GetComponent<Enemy>();
 			
-			enemy.Speed = Enemies[i].speed;
+			enemy.Speed = Enemies[i].Speed;
 			enemy.Life = Enemies[i].Life;
 			enemy.Damage = Enemies[i].Damage;
-			enemy.alreadyMoved = false;
 			enemy.maxCellsMovement = Enemies[i].Movements;
+			enemy.alreadyMoved = false;
 			
 			AliveEnemies.Add(enemy);
 		}
@@ -65,6 +63,8 @@ public class EnemyController : MonoBehaviour {
 		}
 	}
 
+
+#region Movement
 	private Vector3 positionWhileMovement;
 	private void MoveEnemy()
 	{	
@@ -75,6 +75,25 @@ public class EnemyController : MonoBehaviour {
 		CheckIfPositionReached();		
 	}
 
+	private void CheckIfPositionReached()
+	{
+		Vector3 DistanceToTarget = CurrentEnemy.transform.position - CurrentTarget;
+		DistanceToTarget.y = 0;
+
+		if(DistanceToTarget.magnitude <= 0.01f)
+		{	
+			Vector3 finalPosition = CurrentTarget;
+			finalPosition.y = 0;
+
+			CurrentEnemy.gameObject.transform.position = finalPosition;
+			CurrentEnemy.alreadyMoved = true;
+			MovingEnemy = false;
+			EnemyAttacking = true;
+		}
+	}
+	
+#endregion
+#region Attack	
 	private void Attack()
 	{
 		var tile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentTarget.x && t.yCoord == CurrentTarget.z);
@@ -86,7 +105,8 @@ public class EnemyController : MonoBehaviour {
 	
 		EnemyAttacking = false;
 	}
-
+#endregion
+#region Current Enemy on Movement selection
 	private void SetCurrentEnemyMoving()
 	{
 		for(int i = 0; i < Enemies.Count; i++)
@@ -105,9 +125,6 @@ public class EnemyController : MonoBehaviour {
 
 	private void SetNewTarget()
 	{
-		if(MainManager.Instance.isGameOver)
-			return;
-
 		EnemyAttacking = true;
 		Vector3 CurrentCharacterSelected = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform.position;
 		Vector3 DistanceToCharacter = CurrentEnemy.transform.position - CurrentCharacterSelected;
@@ -129,24 +146,7 @@ public class EnemyController : MonoBehaviour {
 			return;
 		}	
 	}
-
-	private void CheckIfPositionReached()
-	{
-		Vector3 DistanceToTarget = CurrentEnemy.transform.position - CurrentTarget;
-		DistanceToTarget.y = 0;
-
-		if(DistanceToTarget.magnitude <= 0.01f)
-		{	
-			Vector3 finalPosition = CurrentTarget;
-			finalPosition.y = 0;
-
-			CurrentEnemy.gameObject.transform.position = finalPosition;
-			CurrentEnemy.alreadyMoved = true;
-			MovingEnemy = false;
-			EnemyAttacking = true;
-		}
-	}
-
+#endregion
 #region External Access
 	public void ResetEnemies()
 	{
@@ -160,6 +160,15 @@ public class EnemyController : MonoBehaviour {
 	{
 		EnemyAttacking = false;
 		MovingEnemy = false;
+	}
+
+	public void EnemyKilled(Enemy enemy)
+	{
+		AliveEnemies.Remove(enemy);
+		if(AliveEnemies.Count <= 0)
+		{
+			MainManager.Instance.GameOver();
+		}
 	}
 #endregion
 

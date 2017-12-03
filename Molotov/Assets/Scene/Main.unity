@@ -1713,6 +1713,7 @@ MonoBehaviour:
   _EnemyController: {fileID: 1835047510}
   CurrentTurn: 0
   EnemyTurn: 0
+  isGameOver: 0
 --- !u!1 &1627345868
 GameObject:
   m_ObjectHideFlags: 0
@@ -2048,7 +2049,9 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Move: Left click
 
-    Throw: Right click'
+    Throw: Right click
+
+    ESC: Exit'
 --- !u!222 &2024017617
 CanvasRenderer:
   m_ObjectHideFlags: 0
