@@ -10,9 +10,12 @@ public class PlayerController : MonoBehaviour {
 	public bool movingCharacter = false;
 	public Character CurrentCharacterSelected;
 	public List<CharacterInfo> AvailableCharacters; 
+
+	[HideInInspector]
+	public List<Character> AliveCharacters;
+
 #endregion
 #region Private Variables
-	private List<Character> AliveCharacters;
 	private Transform currentCharacterTarget;
 	private GameObject MolotovInstance;
 #endregion
@@ -20,7 +23,6 @@ public class PlayerController : MonoBehaviour {
 	public void Initialize()
 	{
 		AliveCharacters = new List<Character>();
-
 		InstantiateCharacters();		
 	}
 
@@ -36,8 +38,9 @@ public class PlayerController : MonoBehaviour {
 			newCharacter.GetComponent<Renderer>().material = AvailableCharacters[i].Material;
 
 			Character character = newCharacter.GetComponent<Character>();
-			character.name = AvailableCharacters[i].name;			
-			character.speed = AvailableCharacters[i].speed;
+			character.name = AvailableCharacters[i].Name;			
+			character.Speed = AvailableCharacters[i].Speed;
+			character.Life = AvailableCharacters[i].Life;
 			character.maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
 			character.movementsLeft = AvailableCharacters[i].maxCellsMovement;
 			
@@ -50,6 +53,9 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () 
 	{
+		if(MainManager.Instance.isGameOver)
+			return;
+			
 		Movement();
 
 		if(Input.GetMouseButtonDown(1))
@@ -70,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 		if(!movingCharacter)
 			return;
 		
-		positionWhileMovement = Vector3.MoveTowards(CurrentCharacterSelected.transform.position, currentCharacterTarget.position, CurrentCharacterSelected.speed * Time.deltaTime);
+		positionWhileMovement = Vector3.MoveTowards(CurrentCharacterSelected.transform.position, currentCharacterTarget.position, CurrentCharacterSelected.Speed * Time.deltaTime);
 		positionWhileMovement.y = 0;
 		
 		CurrentCharacterSelected.transform.position = positionWhileMovement;
@@ -123,7 +129,7 @@ public class PlayerController : MonoBehaviour {
 	private bool CheckIfTargetOccupied(Vector3 possibleTargetPosition)
 	{
 		var possibleTargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == possibleTargetPosition.x && tile.yCoord == possibleTargetPosition.z);
-		return possibleTargetTile.isOccupied;
+		return possibleTargetTile.isOccupiedByCharacter || possibleTargetTile.isOccupiedByEnemy;
 	}
 
 	private bool CanCharacterMoveOnCurrentTurn(int distance)

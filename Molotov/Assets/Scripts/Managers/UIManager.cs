@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public Text farText, closeText, turnsNumber, movingText, enemyTurnText, occupiedText;
+	public Text farText, closeText, turnsNumber, movingText, enemyTurnText, occupiedText, gameOverText;
 
 	public Text[] CharacterSheetTexts;
 	
@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour {
 		DisableAllWarnings();
 		DisableMovingText();
 		DisableEnemyTurnText();
+		DisableGameOverText();
 	}
 
 	public void NextTurn()
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour {
 	{
 		CharacterSheetTexts[0].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.name;
 		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
+		CharacterSheetTexts[2].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.Life.ToString();
 	}
 
 #region Enable Text
@@ -60,6 +62,11 @@ public class UIManager : MonoBehaviour {
 		enemyTurnText.enabled = true;
 	}
 
+	public void EnableGameOverText()
+	{
+		gameOverText.enabled = true;
+	}
+
 #endregion
 	
 #region Disable Text
@@ -79,7 +86,11 @@ public class UIManager : MonoBehaviour {
 	{
 		enemyTurnText.enabled = false;
 	}
-
+	
+	public void DisableGameOverText()
+	{
+		gameOverText.enabled = false;
+	}
 	private IEnumerator Wait(int option)
 	{
 		yield return new WaitForSeconds(1);

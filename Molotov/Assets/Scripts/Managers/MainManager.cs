@@ -13,9 +13,11 @@ public class MainManager : Singleton<MainManager>{
 	public int CurrentTurn = 0;
 
 	public bool EnemyTurn = false;
+	public bool isGameOver = false;
 
 	void Start()
 	{
+		isGameOver = false;
 		_MapGenerator.Initialize();
 		_UIManager.Initialize();
 		_PlayerController.Initialize();
@@ -48,5 +50,12 @@ public class MainManager : Singleton<MainManager>{
 		_EnemyController.ResetEnemies();
 	}
 
+	public void GameOver()
+	{
+		isGameOver = true;
+		_UIManager.DisableEnemyTurnText();
+		_UIManager.EnableGameOverText();
+		_EnemyController.GameOver();
+	}
 
 }

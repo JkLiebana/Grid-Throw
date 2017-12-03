@@ -5,7 +5,9 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
 
 	public int xCoord, yCoord;
-	public bool isOccupied;
+	public bool isOccupiedByCharacter, isOccupiedByEnemy;
+
+	public Character CharacterOnTile;
 
 	void OnMouseDown()
 	{
@@ -15,17 +17,25 @@ public class Tile : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if(other.tag != "Ground")
+		if(other.tag == "Character")
 		{
-			isOccupied = true;
+			isOccupiedByCharacter = true;
+			CharacterOnTile = other.gameObject.GetComponent<Character>();
 		}
+		else if(other.tag == "Enemy")
+		{
+			isOccupiedByEnemy = true;
+		}
+		
 	}
 
 	void OnTriggerExit(Collider other)
 	{
 		if(other.tag != "Ground")
 		{
-			isOccupied = false;
+			isOccupiedByCharacter = false;
+			isOccupiedByEnemy = false;			
+			CharacterOnTile = null;
 		}
 	}
 }

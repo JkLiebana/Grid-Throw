@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114026502394174504}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: 
-  speed: 0
+  Speed: 0
+  Life: 0
   maxCellsMovement: 0
   movementsLeft: 0

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-	public int speed;
+	public int Speed;
+	public int Life;
+	public int Damage;
 	public int maxCellsMovement;
-	public int life;
+
 
 	public bool alreadyMoved;
 
