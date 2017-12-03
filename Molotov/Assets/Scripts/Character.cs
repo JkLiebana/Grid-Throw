@@ -7,6 +7,7 @@ public class Character : MonoBehaviour {
 	public float Speed;
 	public int Life;
 	public int Damage;
+	public int MaxThrows = 1;
 	public int maxCellsMovement;
 	public int movementsLeft;
 

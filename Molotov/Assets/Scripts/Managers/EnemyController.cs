@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour {
 #region Public Variables
 	public List<EnemyInfo> Enemies;
 	public Enemy CurrentEnemy;
+	public RectTransform EnemyHealthCanvas;
+	public GameObject HealthBar;
 
 #endregion
 
@@ -41,7 +43,22 @@ public class EnemyController : MonoBehaviour {
 			enemy.alreadyMoved = false;
 			
 			AliveEnemies.Add(enemy);
+
+			InstantiateHealthBar(enemy);
 		}
+	}
+
+	private void InstantiateHealthBar(Enemy enemy)
+	{
+		var bar = Instantiate(HealthBar);
+		bar.transform.SetParent(EnemyHealthCanvas.transform);
+
+		bar.GetComponent<UI_FollowEnemy>().objectToFollow = enemy.gameObject.transform;
+		bar.GetComponent<UI_FollowEnemy>()._myCanvas = EnemyHealthCanvas;
+
+		enemy.EnemyHealth = bar.GetComponentInChildren<UnityEngine.UI.Slider>();		
+		enemy.EnemyHealth.maxValue = enemy.Life;
+		enemy.EnemyHealth.value = enemy.Life;
 	}
 
 	void Update()
@@ -109,7 +126,7 @@ public class EnemyController : MonoBehaviour {
 #region Current Enemy on Movement selection
 	private void SetCurrentEnemyMoving()
 	{
-		for(int i = 0; i < Enemies.Count; i++)
+		for(int i = 0; i < AliveEnemies.Count; i++)
 		{
 			if(!AliveEnemies[i].alreadyMoved)
 			{

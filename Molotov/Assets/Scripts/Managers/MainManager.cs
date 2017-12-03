@@ -43,7 +43,7 @@ public class MainManager : Singleton<MainManager>{
 		CurrentTurn++;
 		EnemyTurn = false;
 		_UIManager.DisableEnemyTurnText();
-		_PlayerController.ResetMovements();
+		_PlayerController.ResetMovementsAndThrows();
 
 		_UIManager.turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
 		_UIManager.RefreshCharacterInfo();

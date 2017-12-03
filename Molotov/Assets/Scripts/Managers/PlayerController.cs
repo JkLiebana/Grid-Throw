@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
 #region Public Variables
 	public GameObject MolotovPrefab;
 	public bool movingCharacter = false;
+	public bool throwingMolotov = false;
+	
 	public Character CurrentCharacterSelected;
 	public List<CharacterInfo> AvailableCharacters; 
 
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour {
 			Application.Quit();
 		}
 
-		if(MainManager.Instance.isGameOver)
+		if(MainManager.Instance.EnemyTurn || MainManager.Instance.isGameOver)
 			return;
 
 		Movement();
@@ -123,11 +125,12 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public void ResetMovements()
+	public void ResetMovementsAndThrows()
 	{
 		for(int i = 0; i < AliveCharacters.Count; i++)
 		{
 			AliveCharacters[i].movementsLeft = AliveCharacters[i].maxCellsMovement;
+			AliveCharacters[i].MaxThrows = 1;
 		}
 	}
 #endregion
@@ -186,12 +189,17 @@ public class PlayerController : MonoBehaviour {
 		}
 		else
 		{
-			ThrowMolotov(target);
+			if(CurrentCharacterSelected.MaxThrows > 0)
+			{
+				ThrowMolotov(target);
+				CurrentCharacterSelected.MaxThrows--;			
+			}
 		}
 	}
 
 	private void ThrowMolotov(Transform target)
 	{
+		throwingMolotov = true;
 		MolotovInstance = Instantiate(MolotovPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
 		MolotovInstance.GetComponent<Molotov>().Initialize(target, CurrentCharacterSelected.Damage);
 	}

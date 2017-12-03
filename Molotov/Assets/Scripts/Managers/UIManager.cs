@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour {
 
 	public void NextTurn()
 	{
-		if(MainManager.Instance.EnemyTurn)
+		if(MainManager.Instance.EnemyTurn || MainManager.Instance._PlayerController.throwingMolotov)
 			return;
 			
 		MainManager.Instance.StartEnemyTurn();

@@ -10,15 +10,18 @@ public class Enemy : MonoBehaviour {
 	public int maxCellsMovement;
 	public bool alreadyMoved;
 
+	public UnityEngine.UI.Slider EnemyHealth;
+
 	public void RecieveDamage(int Damage)
 	{
 		if(Life - Damage <= 0)
 		{
 			MainManager.Instance._EnemyController.EnemyKilled(this);
+			Destroy(EnemyHealth.transform.parent.gameObject);
 			Destroy(this.gameObject);
 		}
 
 		Life -= Damage;
-		
+		EnemyHealth.value = Life;		
 	}
 }

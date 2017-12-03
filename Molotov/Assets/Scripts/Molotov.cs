@@ -60,7 +60,7 @@ public class Molotov : MonoBehaviour {
 		{
 			target.gameObject.GetComponent<Enemy>().RecieveDamage(Damage);
 		}
-
+		MainManager.Instance._PlayerController.throwingMolotov = false;
 		Destroy(this.gameObject);
 	}
 }
