@@ -9,6 +9,7 @@ public class MainManager : Singleton<MainManager>{
 	public UIManager _UIManager;
 	public PlayerController _PlayerController;
 	public EnemyController _EnemyController;
+	public PoolingManager _PoolingManager;
 
 	public int CurrentTurn = 0;
 
@@ -18,6 +19,8 @@ public class MainManager : Singleton<MainManager>{
 	void Start()
 	{
 		isGameOver = false;
+		
+		_PoolingManager.Initialize();
 		_MapGenerator.Initialize();
 		_UIManager.Initialize();
 		_PlayerController.Initialize();

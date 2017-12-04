@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour {
 	public int maxCellsMovement;
 	public bool alreadyMoved;
 
+	public bool Alive = false;
+
 	public UnityEngine.UI.Slider EnemyHealth;
 
 	public void RecieveDamage(int Damage)
@@ -17,11 +19,34 @@ public class Enemy : MonoBehaviour {
 		if(Life - Damage <= 0)
 		{
 			MainManager.Instance._EnemyController.EnemyKilled(this);
-			Destroy(EnemyHealth.transform.parent.gameObject);
-			Destroy(this.gameObject);
+			MainManager.Instance._PoolingManager.DespawnEnemy(this);
 		}
 
 		Life -= Damage;
 		EnemyHealth.value = Life;		
+	}
+
+	public void Kill()
+	{
+		Alive = false;
+		gameObject.SetActive(false);
+		EnemyHealth.transform.parent.gameObject.SetActive(false);
+	}
+
+	public void Revive(EnemyInfo enemyInfo)
+	{
+		Speed = enemyInfo.Speed;
+		Life = enemyInfo.Life;
+		Damage = enemyInfo.Damage;
+		maxCellsMovement = enemyInfo.Movements;
+
+		EnemyHealth.maxValue = Life;
+		EnemyHealth.value = Life;
+		alreadyMoved = false;
+
+		Alive = true;
+
+		gameObject.SetActive(true);
+		EnemyHealth.transform.parent.gameObject.SetActive(true);
 	}
 }

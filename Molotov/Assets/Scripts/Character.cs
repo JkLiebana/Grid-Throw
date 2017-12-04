@@ -11,6 +11,8 @@ public class Character : MonoBehaviour {
 	public int maxCellsMovement;
 	public int movementsLeft;
 
+	public bool Alive = false;
+
 	void OnMouseDown()
 	{
 		if(!MainManager.Instance.EnemyTurn)
@@ -29,16 +31,40 @@ public class Character : MonoBehaviour {
 			if(MainManager.Instance._PlayerController.AliveCharacters.Count <= 0)
 			{
 				MainManager.Instance.GameOver();
-				Destroy(this.gameObject);
+				MainManager.Instance._PoolingManager.DespawnCharacter(this);
 				return;
 			}
 			
 			MainManager.Instance._PlayerController.CurrentCharacterSelected = MainManager.Instance._PlayerController.AliveCharacters[0];
-			Destroy(this.gameObject);
-		}
+			MainManager.Instance._PoolingManager.DespawnCharacter(this);
+					}
 		else
 		{
 			Life -= damageRecieved;		
 		}
+	}
+
+	public void Kill()
+	{
+		Alive = false;
+		gameObject.SetActive(false);
+	}
+
+	public Character Revive(CharacterInfo characterInfo)
+	{
+		gameObject.name = characterInfo.Name;
+
+		gameObject.GetComponent<Renderer>().material = characterInfo.Material;
+
+		Speed = characterInfo.Speed;
+		Life = characterInfo.Life;
+		Damage = characterInfo.Damage;
+		maxCellsMovement = characterInfo.maxCellsMovement;
+		movementsLeft = characterInfo.maxCellsMovement;
+		
+		Alive = true;
+		gameObject.SetActive(true);
+
+		return this;
 	}
 }

@@ -30,25 +30,12 @@ public class PlayerController : MonoBehaviour {
 
 	private void InstantiateCharacters()
 	{
-		Character character;
-
 		for(int i = 0; i < AvailableCharacters.Count; i++)
 		{
-			var newCharacter = Instantiate(AvailableCharacters[i].CharacterPrefab, Vector3.zero, Quaternion.identity);
-			
-			newCharacter.transform.position = new Vector3(0, 0, i);
-			newCharacter.name = AvailableCharacters[i].name;
-
-			newCharacter.GetComponent<Renderer>().material = AvailableCharacters[i].Material;
-
-			character = newCharacter.GetComponent<Character>();
-			character.Speed = AvailableCharacters[i].Speed;
-			character.Life = AvailableCharacters[i].Life;
-			character.Damage = AvailableCharacters[i].Damage;
-			character.maxCellsMovement = AvailableCharacters[i].maxCellsMovement;
-			character.movementsLeft = AvailableCharacters[i].maxCellsMovement;
-			
-			AliveCharacters.Add(character);
+			var newCharacter = MainManager.Instance._PoolingManager.SpawnCharacter(AvailableCharacters[i]);
+		
+			newCharacter.transform.position = new Vector3(0, 0, i);			
+			AliveCharacters.Add(newCharacter);
 		}
 
 		CurrentCharacterSelected = AliveCharacters[0];

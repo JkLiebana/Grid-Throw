@@ -7,8 +7,6 @@ public class EnemyController : MonoBehaviour {
 #region Public Variables
 	public List<EnemyInfo> Enemies;
 	public Enemy CurrentEnemy;
-	public RectTransform EnemyHealthCanvas;
-	public GameObject HealthBar;
 
 #endregion
 
@@ -31,34 +29,14 @@ public class EnemyController : MonoBehaviour {
 
 		Vector3 EnemyPosition = new Vector3(MainManager.Instance._MapGenerator.width, 0, MainManager.Instance._MapGenerator.height);
 		for(int i = 0; i < Enemies.Count; i++)
-		{
-			EnemyPosition.z = i;
-			
-			var enemy = Instantiate(Enemies[i].EnemyPrefab, EnemyPosition, Quaternion.identity).GetComponent<Enemy>();
-			
-			enemy.Speed = Enemies[i].Speed;
-			enemy.Life = Enemies[i].Life;
-			enemy.Damage = Enemies[i].Damage;
-			enemy.maxCellsMovement = Enemies[i].Movements;
-			enemy.alreadyMoved = false;
-			
+		{			
+			var enemy = MainManager.Instance._PoolingManager.SpawnEnemy(Enemies[i]);
+
+			EnemyPosition.z = i;				
+			enemy.transform.position = EnemyPosition;
+
 			AliveEnemies.Add(enemy);
-
-			InstantiateHealthBar(enemy);
 		}
-	}
-
-	private void InstantiateHealthBar(Enemy enemy)
-	{
-		var bar = Instantiate(HealthBar);
-		bar.transform.SetParent(EnemyHealthCanvas.transform);
-
-		bar.GetComponent<UI_FollowEnemy>().objectToFollow = enemy.gameObject.transform;
-		bar.GetComponent<UI_FollowEnemy>()._myCanvas = EnemyHealthCanvas;
-
-		enemy.EnemyHealth = bar.GetComponentInChildren<UnityEngine.UI.Slider>();		
-		enemy.EnemyHealth.maxValue = enemy.Life;
-		enemy.EnemyHealth.value = enemy.Life;
 	}
 
 	void Update()
