@@ -52,18 +52,21 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Character.cs" />
-     <Compile Include="Assets\Scripts\CharacterInfo.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
-     <Compile Include="Assets\Scripts\EnemyInfo.cs" />
      <Compile Include="Assets\Scripts\Managers\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Managers\MainManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MapGenerator.cs" />
      <Compile Include="Assets\Scripts\Managers\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Managers\PoolingManager.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
-     <Compile Include="Assets\Scripts\Molotov.cs" />
+     <Compile Include="Assets\Scripts\Scriptable Objects\CharacterInfo.cs" />
+     <Compile Include="Assets\Scripts\Scriptable Objects\EnemyInfo.cs" />
+     <Compile Include="Assets\Scripts\Scriptable Objects\WeaponInfo.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Molotov.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Punch.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
      <Compile Include="Assets\UI_FollowEnemy.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

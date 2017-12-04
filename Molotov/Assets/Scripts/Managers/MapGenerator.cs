@@ -23,17 +23,17 @@ public class MapGenerator : MonoBehaviour {
 		{
 			for(int j = 0; j <= height; j++)
 			{
-
-				var cell = Instantiate(TileMap);
-
+				var cellGameObject = Instantiate(TileMap);
+				var cell = cellGameObject.GetComponent<Tile>();
+				
 				tilePosition = new Vector3(i, -1f, j);
-				cell.transform.position = tilePosition;
-				cell.transform.SetParent(Map.transform, true);
+				cellGameObject.transform.position = tilePosition;
+				cellGameObject.transform.SetParent(Map.transform, true);
 
-				cell.GetComponent<Tile>().xCoord = i;
-				cell.GetComponent<Tile>().yCoord = j;			
+				cell.xCoord = i;
+				cell.yCoord = j;			
 
-				Tiles.Add(cell.GetComponent<Tile>());
+				Tiles.Add(cell);
 			}
 		}
 	}

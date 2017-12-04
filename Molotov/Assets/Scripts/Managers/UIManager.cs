@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour {
 
 	public void NextTurn()
 	{
-		if(MainManager.Instance.EnemyTurn || MainManager.Instance._PlayerController.throwingMolotov)
+		if(MainManager.Instance.EnemyTurn || MainManager.Instance._PlayerController.characterAttacking)
 			return;
 			
 		MainManager.Instance.StartEnemyTurn();
@@ -31,6 +31,13 @@ public class UIManager : MonoBehaviour {
 		CharacterSheetTexts[0].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.name;
 		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
 		CharacterSheetTexts[2].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.Life.ToString();
+		CharacterSheetTexts[3].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.CurrentWeaponSelected.Name;
+	}
+
+	public void ChangeWeapon()
+	{
+		MainManager.Instance._PlayerController.ChangeWeapon();
+		RefreshCharacterInfo();
 	}
 
 #region Enable Text

@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 #region Public Variables
 	public GameObject MolotovPrefab;
 	public bool movingCharacter = false;
-	public bool throwingMolotov = false;
+	public bool characterAttacking = false;
 	
 	public Character CurrentCharacterSelected;
 	public List<CharacterInfo> AvailableCharacters; 
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour {
         	
 			if (Physics.Raycast(ray, out hit, 100))
 			{
-				CheckIfPossibleLaunch(hit.transform);
+				CheckIfPossibleAttack(hit.transform);
 			}	
 		}
 	}
@@ -112,16 +112,28 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public void ResetMovementsAndThrows()
+	public void ResetMovementsAndAttacks()
 	{
 		for(int i = 0; i < AliveCharacters.Count; i++)
 		{
 			AliveCharacters[i].movementsLeft = AliveCharacters[i].maxCellsMovement;
-			AliveCharacters[i].MaxThrows = 1;
+			AliveCharacters[i].CurrentAttacksPerTurn = AliveCharacters[i].MaxAttacksPerTurn;
 		}
 	}
 #endregion
-	
+
+#region Weapon Management
+
+	public void ChangeWeapon()
+	{
+		var currentIndexOf =  CurrentCharacterSelected.Weapons.IndexOf( CurrentCharacterSelected.CurrentWeaponSelected);
+		var nextWeapon =  CurrentCharacterSelected.Weapons[(currentIndexOf + 1) ==  CurrentCharacterSelected.Weapons.Count ? 0 : (currentIndexOf + 1)];
+		
+		CurrentCharacterSelected.CurrentWeaponSelected = nextWeapon;
+	}
+
+#endregion
+
 #region Internal Movement Utilities
 	private bool CheckIfTargetOccupied(Vector3 possibleTargetPosition)
 	{
@@ -163,33 +175,35 @@ public class PlayerController : MonoBehaviour {
 #endregion
 
 #region Internal Attack Utilities
-	private void CheckIfPossibleLaunch(Transform target)
+
+	private void CheckIfPossibleAttack(Transform target)
 	{
-		float distance = Vector3.Distance(target.position, CurrentCharacterSelected.transform.position);
-		if(distance <= 2)
+		Vector3 distance = CurrentCharacterSelected.transform.position - target.position;
+		distance.y = 0;
+
+		if(distance.magnitude < CurrentCharacterSelected.CurrentWeaponSelected.minRange)
 		{
-			MainManager.Instance._UIManager.EnableCloseText();
+			MainManager.Instance._UIManager.EnableCloseText();			
 		}
-		else if(distance >= 5)
+		else if(distance.magnitude >= CurrentCharacterSelected.CurrentWeaponSelected.maxRange)
 		{
-			MainManager.Instance._UIManager.EnableFarText();
+			MainManager.Instance._UIManager.EnableFarText();			
 		}
-		else
+		else if(CurrentCharacterSelected.CurrentAttacksPerTurn >= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost)
 		{
-			if(CurrentCharacterSelected.MaxThrows > 0)
-			{
-				ThrowMolotov(target);
-				CurrentCharacterSelected.MaxThrows--;			
-			}
+			Attack(target);
 		}
 	}
 
-	private void ThrowMolotov(Transform target)
+	private void Attack(Transform target)
 	{
-		throwingMolotov = true;
-		MolotovInstance = Instantiate(MolotovPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
-		MolotovInstance.GetComponent<Molotov>().Initialize(target, CurrentCharacterSelected.Damage);
+		CurrentCharacterSelected.CurrentAttacksPerTurn -= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost;
+
+		var weaponGameObject = Instantiate(CurrentCharacterSelected.CurrentWeaponSelected.WeaponPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
+		weaponGameObject.GetComponent<Weapon>().Initialize(target, CurrentCharacterSelected.CurrentWeaponSelected.Damage);
+		characterAttacking = true;
 	}
+
 #endregion
 
 }

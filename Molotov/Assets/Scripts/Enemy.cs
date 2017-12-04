@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour {
 	public int Damage;
 	public int maxCellsMovement;
 	public bool alreadyMoved;
-
 	public bool Alive = false;
 
 	public UnityEngine.UI.Slider EnemyHealth;
@@ -18,6 +17,13 @@ public class Enemy : MonoBehaviour {
 	{
 		if(Life - Damage <= 0)
 		{
+			var tile = MainManager.Instance._MapGenerator.Tiles.Find(_tile => _tile.xCoord == transform.position.x && _tile.yCoord == transform.position.y);
+			
+			if(tile != null)
+			{
+				tile.isOccupiedByEnemy = false;
+			}
+			
 			MainManager.Instance._EnemyController.EnemyKilled(this);
 			MainManager.Instance._PoolingManager.DespawnEnemy(this);
 		}

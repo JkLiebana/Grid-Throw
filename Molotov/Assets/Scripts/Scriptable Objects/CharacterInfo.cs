@@ -11,6 +11,8 @@ public class CharacterInfo : ScriptableObject {
 	public string Name;
 	public float Speed;
 	public int Life;
-	public int Damage;
+	public int MaxAttacksPerTurn;
 	public int maxCellsMovement;
+	public List<WeaponInfo> Weapons;
+
 }

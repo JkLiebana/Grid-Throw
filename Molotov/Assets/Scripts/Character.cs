@@ -7,10 +7,14 @@ public class Character : MonoBehaviour {
 	public float Speed;
 	public int Life;
 	public int Damage;
-	public int MaxThrows = 1;
+	public int MaxAttacksPerTurn;
+	public int CurrentAttacksPerTurn;
 	public int maxCellsMovement;
 	public int movementsLeft;
+	public WeaponInfo CurrentWeaponSelected;
 
+	[HideInInspector]
+	public List<WeaponInfo> Weapons;
 	public bool Alive = false;
 
 	void OnMouseDown()
@@ -50,7 +54,7 @@ public class Character : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
-	public Character Revive(CharacterInfo characterInfo)
+	public void Revive(CharacterInfo characterInfo)
 	{
 		gameObject.name = characterInfo.Name;
 
@@ -58,13 +62,15 @@ public class Character : MonoBehaviour {
 
 		Speed = characterInfo.Speed;
 		Life = characterInfo.Life;
-		Damage = characterInfo.Damage;
+		MaxAttacksPerTurn = characterInfo.MaxAttacksPerTurn;
+		CurrentAttacksPerTurn = MaxAttacksPerTurn;
 		maxCellsMovement = characterInfo.maxCellsMovement;
 		movementsLeft = characterInfo.maxCellsMovement;
 		
+		Weapons.AddRange(characterInfo.Weapons);
+		CurrentWeaponSelected = Weapons[0];
+		
 		Alive = true;
 		gameObject.SetActive(true);
-
-		return this;
 	}
 }

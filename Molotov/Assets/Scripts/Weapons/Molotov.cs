@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Molotov : MonoBehaviour {
+public class Molotov : Weapon {
 
-	public GameObject FirePS;
 	public Transform target;
-	public float speed = 2;
 	public float throwAngle = 45f;
 	public float gravity = 9.8f;
-
-	private int Damage;
-
 	public Material cellDestroyedMaterial;
-	
 
-	public void Initialize(Transform _target, int characterDamage)
+
+	public override void Initialize(Transform _target, int characterDamage)
 	{
 		target = _target;
 		Damage = characterDamage;
@@ -53,14 +48,14 @@ public class Molotov : MonoBehaviour {
 
 	IEnumerator DestroyMolotov()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.05f);
 		target.gameObject.GetComponent<Renderer>().material = cellDestroyedMaterial;
 		
 		if(target.gameObject.GetComponent<Enemy>())
 		{
 			target.gameObject.GetComponent<Enemy>().RecieveDamage(Damage);
 		}
-		MainManager.Instance._PlayerController.throwingMolotov = false;
+		MainManager.Instance._PlayerController.characterAttacking = false;
 		Destroy(this.gameObject);
 	}
 }

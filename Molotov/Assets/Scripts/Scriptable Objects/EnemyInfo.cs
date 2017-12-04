@@ -9,6 +9,7 @@ public class EnemyInfo : ScriptableObject {
 	public int Movements;
 	public int Speed;
 	public int Damage;
+
 	public GameObject EnemyPrefab;
 
 }
