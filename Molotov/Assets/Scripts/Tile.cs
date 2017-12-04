@@ -30,7 +30,7 @@ public class Tile : MonoBehaviour {
 
 	void OnTriggerExit(Collider other)
 	{
-		if(other.tag != "Ground")
+		if(other.tag == "Enemy" || other.tag == "Character")
 		{
 			isOccupiedByCharacter = false;
 			isOccupiedByEnemy = false;			
