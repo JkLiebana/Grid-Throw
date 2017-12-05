@@ -10,6 +10,7 @@ public class MainManager : Singleton<MainManager>{
 	public PlayerController _PlayerController;
 	public EnemyController _EnemyController;
 	public PoolingManager _PoolingManager;
+	public PathfindingManager _PathfindingManager;
 
 	public int CurrentTurn = 0;
 

@@ -50,7 +50,7 @@ public class EnemyController : MonoBehaviour {
 		}
 		else if(EnemyAttacking)
 		{
-			Attack();
+			CheckIfPossibleAttack();
 		}
 		else
 		{
@@ -83,19 +83,31 @@ public class EnemyController : MonoBehaviour {
 			CurrentEnemy.gameObject.transform.position = finalPosition;
 			CurrentEnemy.alreadyMoved = true;
 			MovingEnemy = false;
-			EnemyAttacking = true;
+			CheckIfPossibleAttack();
 		}
 	}
 	
 #endregion
 #region Attack	
-	private void Attack()
+
+	private void CheckIfPossibleAttack()
 	{
-		var tile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentTarget.x && t.yCoord == CurrentTarget.z);
-		
-		if(tile.isOccupiedByCharacter)
+		var currentTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentEnemy.transform.position.x && t.yCoord == CurrentEnemy.transform.position.z);
+
+		var character = MainManager.Instance._PlayerController.CurrentCharacterSelected;
+		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == character.transform.position.x && t.yCoord == character.transform.position.z);
+
+		if(currentTile.GetNeighbours().Contains(characterTile))
 		{
-			tile.CharacterOnTile.RecieveDamage(CurrentEnemy.Damage, tile);
+			EnemyAttacking = true;
+			Attack(characterTile);
+		}
+	}
+	private void Attack(Tile characterTile)
+	{		
+		if(characterTile.isOccupiedByCharacter)
+		{
+			characterTile.CharacterOnTile.RecieveDamage(CurrentEnemy.Damage, characterTile);
 		}
 	
 		EnemyAttacking = false;
@@ -109,38 +121,34 @@ public class EnemyController : MonoBehaviour {
 			if(!AliveEnemies[i].alreadyMoved)
 			{
 				CurrentEnemy = AliveEnemies[i];
-				MovingEnemy = true;
-				SetNewTarget();
-				
+				SetPathToTarget();				
 				return;
 			}
 		}
 		MainManager.Instance.FinishEnemyTurn();
 	}
 
-	private void SetNewTarget()
+
+	private void SetPathToTarget()
 	{
-		EnemyAttacking = true;
-		Vector3 CurrentCharacterSelected = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform.position;
-		Vector3 DistanceToCharacter = CurrentEnemy.transform.position - CurrentCharacterSelected;
-				
-		DistanceToCharacter.Normalize();
-		DistanceToCharacter.x = Mathf.RoundToInt(DistanceToCharacter.x);
-		DistanceToCharacter.z = Mathf.RoundToInt(DistanceToCharacter.z);
+		Transform target = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform;
+		List<Tile> path = new List<Tile>();
 
-		CurrentTarget.x = CurrentEnemy.transform.position.x - (DistanceToCharacter.x * CurrentEnemy.maxCellsMovement);
-		CurrentTarget.z = CurrentEnemy.transform.position.z - (DistanceToCharacter.z * CurrentEnemy.maxCellsMovement);
+		path = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, target);
 
-		var TargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == CurrentTarget.x && tile.yCoord == CurrentTarget.z);
-
-		if(TargetTile.isOccupiedByCharacter || TargetTile.isOccupiedByEnemy)
+		if(path.Count <= 0)
 		{
 			MovingEnemy = false;
 			EnemyAttacking = true;
 			CurrentEnemy.alreadyMoved = true;
 			return;
-		}	
+		}
+		CurrentTarget.x = path[path.Count - CurrentEnemy.maxCellsMovement].xCoord;
+		CurrentTarget.z = path[path.Count - CurrentEnemy.maxCellsMovement].yCoord;
+
+		MovingEnemy = true;
 	}
+	
 #endregion
 #region External Access
 	public void ResetEnemies()

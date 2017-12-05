@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\Managers\EnemyController.cs" />
      <Compile Include="Assets\Scripts\Managers\MainManager.cs" />
      <Compile Include="Assets\Scripts\Managers\MapGenerator.cs" />
+     <Compile Include="Assets\Scripts\Managers\PathfindingManager.cs" />
      <Compile Include="Assets\Scripts\Managers\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Managers\PoolingManager.cs" />
      <Compile Include="Assets\Scripts\Managers\UIManager.cs" />

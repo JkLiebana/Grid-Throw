@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour {
 			if(tile != null)
 			{
 				tile.isOccupiedByEnemy = false;
+				tile.walkable = true;
 			}
 			
 			MainManager.Instance._EnemyController.EnemyKilled(this);

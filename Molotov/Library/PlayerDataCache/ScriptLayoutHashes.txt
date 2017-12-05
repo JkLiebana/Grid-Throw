@@ -47,6 +47,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
+486c39a8b61cc70519ffa5f6a3b7280b Assembly-CSharp.dll:.Katana
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
 49cd62a578efc0a599b810a2b66cd49c UnityEngine.UI.dll:UnityEngine.UI.Button
@@ -113,9 +114,9 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 7d2ce546993bbba7448353eafb8df639 Assembly-CSharp.dll:.UI_FollowEnemy
-1829b6424add86bffbc0e0e940c6e806 Assembly-CSharp.dll:.MainManager
+185cc739b69352218099c5ee7feeb475 Assembly-CSharp.dll:.MainManager
 486c39a8b61cc70519ffa5f6a3b7280b Assembly-CSharp.dll:.Punch
-334376044c0efb5a215ba38d8bce7f83 Assembly-CSharp.dll:.Tile
+3714e1f9a767626061ef758fa5943f8c Assembly-CSharp.dll:.Tile
 7a99b55bf3e7eedd648432aa709d9ad0 Assembly-CSharp.dll:.WeaponInfo
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -145,4 +146,4 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 c80ba2740120883e41bcfe65c3c89633 Assembly-CSharp.dll:.PoolingManager
 3711cf0b85a56253ac3ca780601e702a Assembly-CSharp.dll:.EnemyController
 31b48a14197d0e9e728e72822f1a969b Assembly-CSharp.dll:.MapGenerator
-486c39a8b61cc70519ffa5f6a3b7280b Assembly-CSharp.dll:.Katana
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PathfindingManager

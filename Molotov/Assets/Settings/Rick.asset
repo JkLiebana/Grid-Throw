@@ -16,9 +16,9 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: 9d1c5c8356b57a949839482818cd37b3, type: 2}
   Name: Rick
   Speed: 5
-  Life: 5
+  Life: 100
   MaxAttacksPerTurn: 3
-  maxCellsMovement: 2
+  maxCellsMovement: 5
   Weapons:
   - {fileID: 11400000, guid: 7c5fde9c6df238643838bfc685ad7e66, type: 2}
   - {fileID: 11400000, guid: f24cd24c63682d747970dcc7a0b13487, type: 2}
