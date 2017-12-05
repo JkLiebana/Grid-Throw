@@ -9,6 +9,4 @@ public class WeaponInfo : ScriptableObject {
 	public int Damage;
 	public int minRange, maxRange;
 	public int AttackCost;
-	public GameObject WeaponPrefab;
-
 }

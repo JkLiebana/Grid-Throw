@@ -869,6 +869,10 @@ MonoBehaviour:
     type: 2}
   CharacterPoolSize: 5
   CharacterPool: []
+  WeaponsPrefab: {fileID: 1683393600062870, guid: 9facef12f0d91b247848772721d1f59e,
+    type: 2}
+  WeaponsPoolSize: 1
+  WeaponPool: []
 --- !u!1 &849615015
 GameObject:
   m_ObjectHideFlags: 0

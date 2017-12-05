@@ -199,8 +199,9 @@ public class PlayerController : MonoBehaviour {
 	{
 		CurrentCharacterSelected.CurrentAttacksPerTurn -= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost;
 
-		var weaponGameObject = Instantiate(CurrentCharacterSelected.CurrentWeaponSelected.WeaponPrefab, CurrentCharacterSelected.transform.position, Quaternion.identity);
-		weaponGameObject.GetComponent<Weapon>().Initialize(target, CurrentCharacterSelected.CurrentWeaponSelected.Damage);
+		var weapon = MainManager.Instance._PoolingManager.SpawnWeapon(CurrentCharacterSelected.CurrentWeaponSelected);
+		weapon.gameObject.transform.position = CurrentCharacterSelected.transform.position;
+		weapon.Initialize(target, CurrentCharacterSelected.CurrentWeaponSelected.Damage);
 		characterAttacking = true;
 	}
 

@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Scriptable Objects\WeaponInfo.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\Tile.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Katana.cs" />
      <Compile Include="Assets\Scripts\Weapons\Molotov.cs" />
      <Compile Include="Assets\Scripts\Weapons\Punch.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />

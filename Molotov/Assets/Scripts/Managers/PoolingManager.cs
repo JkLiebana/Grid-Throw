@@ -17,12 +17,23 @@ public class PoolingManager : MonoBehaviour {
 	public List<Character> CharacterPool;
 #endregion
 
+#region Weapons Pooling Variables
+
+	public GameObject WeaponsPrefab;
+	public int WeaponsPoolSize;
+	public List<Weapon> WeaponPool;
+
+#endregion
+
+	
 	public void Initialize()
 	{
 		InitializeEnemies();
 		InitializeCharacters();
+		InitializeWeapons();
 	}
 
+#region Enemies
 	private void InitializeEnemies()
 	{
 		for(int i = 0; i < EnemyPoolSize; i++)
@@ -41,20 +52,6 @@ public class PoolingManager : MonoBehaviour {
 			enemyGameObject.transform.SetParent(this.gameObject.transform);
 			enemyGameObject.name = "Enemy";
 			enemyGameObject.GetComponent<Enemy>().Kill();
-		}
-	}
-
-	private void InitializeCharacters()
-	{
-		for(int i = 0; i < CharacterPoolSize; i++)
-		{
-			var characterGameObject = Instantiate(CharacterPrefab, Vector3.zero, Quaternion.identity);
-			var character = characterGameObject.GetComponent<Character>();
-
-			characterGameObject.transform.SetParent(this.gameObject.transform);
-			
-			character.Kill();
-			CharacterPool.Add(character);
 		}
 	}
 
@@ -77,6 +74,26 @@ public class PoolingManager : MonoBehaviour {
 		return enemy;
 	}
 
+	public void DespawnEnemy(Enemy enemy)
+	{
+		enemy.Kill();
+	}
+#endregion
+
+#region Characters
+	private void InitializeCharacters()
+	{
+		for(int i = 0; i < CharacterPoolSize; i++)
+		{
+			var characterGameObject = Instantiate(CharacterPrefab, Vector3.zero, Quaternion.identity);
+			var character = characterGameObject.GetComponent<Character>();
+
+			characterGameObject.transform.SetParent(this.gameObject.transform);
+			
+			character.Kill();
+			CharacterPool.Add(character);
+		}
+	}
 	public Character SpawnCharacter(CharacterInfo characterInfo)
 	{
 		for(int i = 0; i < CharacterPool.Count; i++)
@@ -96,14 +113,52 @@ public class PoolingManager : MonoBehaviour {
 		
 		return character;
 	}
-	public void DespawnEnemy(Enemy enemy)
-	{
-		enemy.Kill();
-	}
 
 	public void DespawnCharacter(Character character)
 	{
 		character.Kill();
 	}
+#endregion
+
+#region Weapons
+
+
+	public void InitializeWeapons()
+	{
+		for(int i = 0; i < WeaponsPoolSize; i++)
+		{
+			var weaponGameObject = Instantiate(WeaponsPrefab, Vector3.zero, Quaternion.identity);
+			
+			weaponGameObject.transform.SetParent(transform);
+			WeaponPool.AddRange(weaponGameObject.GetComponentsInChildren<Weapon>());
+			
+			WeaponPool.ForEach(delegate(Weapon w){ w.Kill();});
+		}
+	}
+	public Weapon SpawnWeapon(WeaponInfo weaponInfo)
+	{
+		for(int i = 0; i < WeaponPool.Count; i++)
+		{
+			if(WeaponPool[i].Name == weaponInfo.Name)
+			{
+				var weapon = WeaponPool[i];
+				weapon.Revive();
+				return weapon;
+			}		
+		}
+		return null;
+	}
+
+	public void DespawnWeapon(Weapon weapon)
+	{
+		weapon.Kill();
+	}
+
+
+#endregion
+
+	
+
+	
 
 }

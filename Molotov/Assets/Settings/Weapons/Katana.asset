@@ -9,12 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04f317c81c595ad40a578312c046a312, type: 3}
-  m_Name: Brick
+  m_Name: Katana
   m_EditorClassIdentifier: 
-  Name: Brick
-  Damage: 2
-  minRange: 2
-  maxRange: 5
-  AttackCost: 2
-  WeaponPrefab: {fileID: 1654702769306194, guid: e8991ed710639e24c8a1b07575b3d84b,
-    type: 2}
+  Name: Katana
+  Damage: 3
+  minRange: 1
+  maxRange: 2
+  AttackCost: 1
