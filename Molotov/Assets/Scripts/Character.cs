@@ -30,7 +30,7 @@ public class Character : MonoBehaviour {
 			Life = 0;
 			MainManager.Instance._PlayerController.AliveCharacters.Remove(this);
 			tile.CharacterOnTile = null;
-			tile.isOccupiedByCharacter = false;
+			//tile.isOccupiedByCharacter = false;
 			tile.walkable = true;
 
 			if(MainManager.Instance._PlayerController.AliveCharacters.Count <= 0)

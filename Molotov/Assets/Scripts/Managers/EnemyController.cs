@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour {
 	}
 	private void Attack(Tile characterTile)
 	{		
-		if(characterTile.isOccupiedByCharacter)
+		if(characterTile.CharacterOnTile != null)
 		{
 			characterTile.CharacterOnTile.RecieveDamage(CurrentEnemy.Damage, characterTile);
 		}
@@ -121,30 +121,46 @@ public class EnemyController : MonoBehaviour {
 			if(!AliveEnemies[i].alreadyMoved)
 			{
 				CurrentEnemy = AliveEnemies[i];
-				SetPathToTarget();				
+				SetCurrentTargetAndPath();
 				return;
 			}
 		}
 		MainManager.Instance.FinishEnemyTurn();
 	}
 
-
-	private void SetPathToTarget()
+	private List<Tile> pathToCharacter, shorterPath;
+	private Vector3 dibuja;
+	private void SetCurrentTargetAndPath()
 	{
-		Transform target = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform;
-		List<Tile> path = new List<Tile>();
+		var AliveCharacters = MainManager.Instance._PlayerController.AliveCharacters; 
+		pathToCharacter = new List<Tile>(); 
+		shorterPath = new List<Tile>();
 
-		path = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, target);
+		
+		for(int i = 0; i < AliveCharacters.Count; i++)
+		{
+			pathToCharacter = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, AliveCharacters[i].transform);
 
-		if(path.Count <= 0)
+			if(i == 0)
+			{
+				shorterPath = pathToCharacter;
+			}
+			else if(pathToCharacter.Count < shorterPath.Count)
+			{
+				shorterPath = pathToCharacter;
+			}
+		}
+
+		if(shorterPath.Count <= 0)
 		{
 			MovingEnemy = false;
 			EnemyAttacking = true;
 			CurrentEnemy.alreadyMoved = true;
 			return;
 		}
-		CurrentTarget.x = path[path.Count - CurrentEnemy.maxCellsMovement].xCoord;
-		CurrentTarget.z = path[path.Count - CurrentEnemy.maxCellsMovement].yCoord;
+		
+		CurrentTarget.x = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].xCoord;
+		CurrentTarget.z = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].yCoord;
 
 		MovingEnemy = true;
 	}
@@ -175,4 +191,17 @@ public class EnemyController : MonoBehaviour {
 	}
 #endregion
 
+
+	void OnDrawGizmos()
+	{
+		if(shorterPath == null)
+			return;
+		foreach(Tile t in shorterPath)
+		{
+			var pos = t.transform.position;
+			pos.y = 1;
+			Gizmos.DrawCube(pos, Vector3.one);
+		}
+	
+	}
 }

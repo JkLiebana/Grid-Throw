@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathfindingManager : MonoBehaviour {
+public class PathfindingManager {
 
 	public List<Tile> FindPath(Transform origin, Transform target)
 	{
@@ -36,7 +36,12 @@ public class PathfindingManager : MonoBehaviour {
 
 			foreach(Tile neighbour in currentTile.GetNeighbours())
 			{
-				if(!neighbour.walkable || closedSet.Contains(neighbour))
+				var neighbourPos = neighbour.transform.position;
+				neighbourPos.y = 0;
+				var targetPos = targetTile.transform.position;
+				targetPos.y = 0;
+
+				if(!neighbour.walkable && neighbourPos != targetPos || closedSet.Contains(neighbour))
 				{
 					continue;
 				}
