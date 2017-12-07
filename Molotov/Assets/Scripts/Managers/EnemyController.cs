@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour {
 #region Private Variables
 	private List<Enemy> AliveEnemies;
 	private Vector3 CurrentTarget;
+	private Character CharacterTarget;
 	private bool MovingEnemy = false;
 	private bool EnemyAttacking = false;
 	
@@ -94,8 +95,7 @@ public class EnemyController : MonoBehaviour {
 	{
 		var currentTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentEnemy.transform.position.x && t.yCoord == CurrentEnemy.transform.position.z);
 
-		var character = MainManager.Instance._PlayerController.CurrentCharacterSelected;
-		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == character.transform.position.x && t.yCoord == character.transform.position.z);
+		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CharacterTarget.transform.position.x && t.yCoord == CharacterTarget.transform.position.z);
 
 		if(currentTile.GetNeighbours().Contains(characterTile))
 		{
@@ -105,7 +105,7 @@ public class EnemyController : MonoBehaviour {
 	}
 	private void Attack(Tile characterTile)
 	{		
-		if(characterTile.isOccupiedByCharacter)
+		if(characterTile.CharacterOnTile != null)
 		{
 			characterTile.CharacterOnTile.RecieveDamage(CurrentEnemy.Damage, characterTile);
 		}
@@ -121,30 +121,57 @@ public class EnemyController : MonoBehaviour {
 			if(!AliveEnemies[i].alreadyMoved)
 			{
 				CurrentEnemy = AliveEnemies[i];
-				SetPathToTarget();				
+				SetCurrentTargetAndPath();
 				return;
 			}
 		}
 		MainManager.Instance.FinishEnemyTurn();
 	}
 
-
-	private void SetPathToTarget()
+	private List<Tile> pathToCharacter, shorterPath, finalPath;
+	private Vector3 dibuja;
+	private void SetCurrentTargetAndPath()
 	{
-		Transform target = MainManager.Instance._PlayerController.CurrentCharacterSelected.transform;
-		List<Tile> path = new List<Tile>();
+		var AliveCharacters = MainManager.Instance._PlayerController.AliveCharacters; 
+		pathToCharacter = new List<Tile>(); 
+		shorterPath = new List<Tile>(MainManager.Instance._MapGenerator.Tiles);
+		finalPath = null;
+		
+		for(int i = 0; i < AliveCharacters.Count; i++)
+		{
+			pathToCharacter = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, AliveCharacters[i].transform);
+			
+			if(pathToCharacter == null)
+			{
+				continue;
+			}
 
-		path = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, target);
+			if(pathToCharacter.Count < shorterPath.Count || pathToCharacter.Count <= 0)
+			{
+				shorterPath = pathToCharacter;
+				finalPath = shorterPath;
+				CharacterTarget = AliveCharacters[i];		
+			}
+		}
+		
+		if(finalPath == null)
+		{
+			MovingEnemy = false;
+			EnemyAttacking = false;
+			CurrentEnemy.alreadyMoved = true;
+			return;
+		}
 
-		if(path.Count <= 0)
+		if(shorterPath.Count <= 0)
 		{
 			MovingEnemy = false;
 			EnemyAttacking = true;
 			CurrentEnemy.alreadyMoved = true;
 			return;
-		}
-		CurrentTarget.x = path[path.Count - CurrentEnemy.maxCellsMovement].xCoord;
-		CurrentTarget.z = path[path.Count - CurrentEnemy.maxCellsMovement].yCoord;
+		}	
+		
+		CurrentTarget.x = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].xCoord;
+		CurrentTarget.z = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].yCoord;
 
 		MovingEnemy = true;
 	}
@@ -175,4 +202,18 @@ public class EnemyController : MonoBehaviour {
 	}
 #endregion
 
+
+	/*
+	void OnDrawGizmos()
+	{
+		if(shorterPath == null)
+			return;
+		foreach(Tile t in shorterPath)
+		{
+			var pos = t.transform.position;
+			pos.y = 1;
+			Gizmos.DrawCube(pos, Vector3.one);
+		}
+	}
+	 */
 }

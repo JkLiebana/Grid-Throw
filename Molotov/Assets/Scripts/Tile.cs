@@ -20,7 +20,6 @@ public class Tile : MonoBehaviour {
 		walkable = true;
 	}
 	public int xCoord, yCoord;
-	public bool isOccupiedByCharacter, isOccupiedByEnemy;
 
 	public Character CharacterOnTile;
 
@@ -30,33 +29,25 @@ public class Tile : MonoBehaviour {
 			MainManager.Instance._PlayerController.SetNewTarget(gameObject.transform);
 	}
 
-	void OnTriggerEnter(Collider other)
-	{
-		if(other.tag == "Character")
-		{
-			isOccupiedByCharacter = true;
-			CharacterOnTile = other.gameObject.GetComponent<Character>();
-		}
-		else if(other.tag == "Enemy")
-		{
-			isOccupiedByEnemy = true;
-			walkable = false;
-		}
-	}
-
 	void OnTriggerStay(Collider other)
 	{
-		if(other.tag == "Enemy")
+		if(other.tag == "Ground")
+			return;
+
+		if(other.tag != "Ground")
 		{
 			walkable = false;
+		}	
+		
+		if(other.tag == "Character")
+		{
+			CharacterOnTile = other.gameObject.GetComponent<Character>();
 		}
 	}
 	void OnTriggerExit(Collider other)
 	{
 		if(other.tag == "Enemy" || other.tag == "Character")
-		{
-			isOccupiedByCharacter = false;
-			isOccupiedByEnemy = false;			
+		{			
 			CharacterOnTile = null;
 			walkable = true;	
 		}

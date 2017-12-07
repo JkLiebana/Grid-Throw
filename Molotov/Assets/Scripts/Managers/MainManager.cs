@@ -21,6 +21,7 @@ public class MainManager : Singleton<MainManager>{
 	{
 		isGameOver = false;
 		
+		//_PathfindingManager = new PathfindingManager();
 		_PoolingManager.Initialize();
 		_MapGenerator.Initialize();
 		_UIManager.Initialize();

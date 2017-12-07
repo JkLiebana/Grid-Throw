@@ -108,6 +108,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PathfindingManager
 bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.AudioSpatializerMicrosoft
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInput
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
@@ -116,7 +117,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 7d2ce546993bbba7448353eafb8df639 Assembly-CSharp.dll:.UI_FollowEnemy
 185cc739b69352218099c5ee7feeb475 Assembly-CSharp.dll:.MainManager
 486c39a8b61cc70519ffa5f6a3b7280b Assembly-CSharp.dll:.Punch
-3714e1f9a767626061ef758fa5943f8c Assembly-CSharp.dll:.Tile
+478f1afe6d2cf4d75c6e8a2027778c75 Assembly-CSharp.dll:.Tile
 7a99b55bf3e7eedd648432aa709d9ad0 Assembly-CSharp.dll:.WeaponInfo
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -146,4 +147,3 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 c80ba2740120883e41bcfe65c3c89633 Assembly-CSharp.dll:.PoolingManager
 3711cf0b85a56253ac3ca780601e702a Assembly-CSharp.dll:.EnemyController
 31b48a14197d0e9e728e72822f1a969b Assembly-CSharp.dll:.MapGenerator
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PathfindingManager

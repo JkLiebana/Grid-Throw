@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour {
 	private bool CheckIfTargetOccupied(Vector3 possibleTargetPosition)
 	{
 		var possibleTargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == possibleTargetPosition.x && tile.yCoord == possibleTargetPosition.z);
-		return possibleTargetTile.isOccupiedByCharacter || possibleTargetTile.isOccupiedByEnemy;
+		return !possibleTargetTile.walkable;
 	}
 
 	private bool CanCharacterMoveOnCurrentTurn(int distance)

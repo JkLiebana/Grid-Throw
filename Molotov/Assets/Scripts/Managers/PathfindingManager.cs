@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class PathfindingManager : MonoBehaviour {
 
+	List<Tile> openSet;
+	HashSet<Tile> closedSet;
+	private bool canDraw = false;
 	public List<Tile> FindPath(Transform origin, Transform target)
 	{
 		Tile startTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == origin.position.x && tile.yCoord == origin.position.z);
 		Tile targetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == target.position.x && tile.yCoord == target.position.z);
 
-		List<Tile> openSet = new List<Tile>();
-		HashSet<Tile> closedSet = new HashSet<Tile>();
+		openSet = new List<Tile>();
+		closedSet = new HashSet<Tile>();
 
 		openSet.Add(startTile);
+		canDraw = true;
 
 		while(openSet.Count > 0)
 		{
@@ -36,7 +40,12 @@ public class PathfindingManager : MonoBehaviour {
 
 			foreach(Tile neighbour in currentTile.GetNeighbours())
 			{
-				if(!neighbour.walkable || closedSet.Contains(neighbour))
+				var neighbourPos = neighbour.transform.position;
+				neighbourPos.y = 0;
+				var targetPos = targetTile.transform.position;
+				targetPos.y = 0;
+
+				if(!neighbour.walkable && neighbourPos != targetPos || closedSet.Contains(neighbour))
 				{
 					continue;
 				}
@@ -88,4 +97,27 @@ public class PathfindingManager : MonoBehaviour {
 		}
 	}
 
+	void OnDrawGizmos() {
+		
+		var size = new Vector3(0.5f, 1, 0.5f);
+		if(!canDraw)
+			return;
+
+		foreach(Tile t in openSet)
+		{
+			var pos = t.transform.position;
+			pos.y = 1;
+			Gizmos.DrawCube(pos, size);
+		}
+		Gizmos.color = Color.red;
+
+		foreach(Tile t in closedSet)
+		{
+			var pos = t.transform.position;
+			pos.y = 1;
+			Gizmos.DrawCube(pos, size);			
+		}
+
+
+	}
 }

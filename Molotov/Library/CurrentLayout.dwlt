@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_MinSize: {x: 917, y: 492}
   m_MaxSize: {x: 22012, y: 14042}
   vertical: 0
-  controlID: 105
+  controlID: 36
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -177,8 +177,8 @@ MonoBehaviour:
     y: 0
     width: 522
     height: 605
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -204,8 +204,8 @@ MonoBehaviour:
     y: 0
     width: 795
     height: 605
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 204, y: 221}
+  m_MaxSize: {x: 4004, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_MinSize: {x: 234, y: 492}
   m_MaxSize: {x: 10004, y: 14042}
   vertical: 1
-  controlID: 106
+  controlID: 129
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -442,14 +442,14 @@ MonoBehaviour:
     width: 520
     height: 584
   m_SceneLighting: 0
-  lastFramingTime: 9323.979918396375
+  lastFramingTime: 9743.333577542215
   m_2DMode: 0
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 5.0560055, y: 0.95978713, z: 2.9963322}
+    m_Target: {x: 3.938037, y: -1.4083095, z: 3.6238978}
     speed: 2
-    m_Value: {x: 5.0560055, y: 0.95978713, z: 2.9963322}
+    m_Value: {x: 3.938037, y: -1.4083095, z: 3.6238978}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -472,13 +472,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.16470517, y: -0.8256616, z: 0.4444473, w: -0.30597693}
+    m_Target: {x: -0.1138379, y: -0.850418, z: 0.20568886, w: -0.4706617}
     speed: 2
-    m_Value: {x: -0.16470516, y: -0.8256615, z: 0.44444725, w: -0.3059769}
+    m_Value: {x: -0.1138379, y: -0.850418, z: 0.20568886, w: -0.4706617}
   m_Size:
-    m_Target: 4.1491227
+    m_Target: 8.019917
     speed: 2
-    m_Value: 4.1491227
+    m_Value: 8.019917
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -639,9 +639,9 @@ MonoBehaviour:
     height: 523
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: c49efbffa29ffbffb0a0fbff6cfbffff00000000f826000044270000b0270000c0270000
+    m_SelectedIDs: d2ecfdff
+    m_LastClickedID: -135982
+    m_ExpandedIDs: f81afeffb858feff1afcffff00000000a62600005e2700006e270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -702,20 +702,20 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Settings
+    - Assets/Material
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Settings
+  - Assets/Material
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Jk\Documents\PANDORA\Desarrollo\ProyectosUnity\Other
     Stuff\Molotov\Molotov
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: b4260000
-    m_LastClickedID: 9908
-    m_ExpandedIDs: 00000000b0260000b4260000ba260000be260000c4260000ffffff7f
+    m_SelectedIDs: 4c260000
+    m_LastClickedID: 9804
+    m_ExpandedIDs: 0000000034260000382600004c260000502600005a260000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -743,7 +743,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b0260000b4260000ba260000be260000c4260000
+    m_ExpandedIDs: 0000000034260000382600004c260000502600005a260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -774,18 +774,18 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: 841b00008c1b0000121e0000c21b0000ca1b0000f01d00000e1c0000d01c00006c1c0000e4040000dc1b0000181d000088350000800500001e050000fe1c0000840600008c250000ac20000024220000262200003e050000400600002005000098070000520500008a050000221d00001a1e0000c81d0000f41d0000842500001a26000026260000a6220000a8ba0000f81d0000f82af7ff261d0000681f0000fcb1fcff9c2600007225000096270000a82700004c24000078290000bc610000422600003c2700005c240000ec240000b82600009025000068240000d0260000268cffff80070000860700001a320000423000002630000034300000dcadffff000000005649feff7aaaffff
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: PathfindingManager
-      m_OriginalName: PathfindingManager
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 10378
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 13}
     m_CreateAssetUtility:
