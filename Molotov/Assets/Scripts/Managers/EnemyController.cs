@@ -13,6 +13,7 @@ public class EnemyController : MonoBehaviour {
 #region Private Variables
 	private List<Enemy> AliveEnemies;
 	private Vector3 CurrentTarget;
+	private Character CharacterTarget;
 	private bool MovingEnemy = false;
 	private bool EnemyAttacking = false;
 	
@@ -94,8 +95,7 @@ public class EnemyController : MonoBehaviour {
 	{
 		var currentTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentEnemy.transform.position.x && t.yCoord == CurrentEnemy.transform.position.z);
 
-		var character = MainManager.Instance._PlayerController.CurrentCharacterSelected;
-		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == character.transform.position.x && t.yCoord == character.transform.position.z);
+		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CharacterTarget.transform.position.x && t.yCoord == CharacterTarget.transform.position.z);
 
 		if(currentTile.GetNeighbours().Contains(characterTile))
 		{
@@ -128,27 +128,38 @@ public class EnemyController : MonoBehaviour {
 		MainManager.Instance.FinishEnemyTurn();
 	}
 
-	private List<Tile> pathToCharacter, shorterPath;
+	private List<Tile> pathToCharacter, shorterPath, finalPath;
 	private Vector3 dibuja;
 	private void SetCurrentTargetAndPath()
 	{
 		var AliveCharacters = MainManager.Instance._PlayerController.AliveCharacters; 
 		pathToCharacter = new List<Tile>(); 
-		shorterPath = new List<Tile>();
-
+		shorterPath = new List<Tile>(MainManager.Instance._MapGenerator.Tiles);
+		finalPath = null;
 		
 		for(int i = 0; i < AliveCharacters.Count; i++)
 		{
 			pathToCharacter = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, AliveCharacters[i].transform);
+			
+			if(pathToCharacter == null)
+			{
+				continue;
+			}
 
-			if(i == 0)
+			if(pathToCharacter.Count < shorterPath.Count || pathToCharacter.Count <= 0)
 			{
 				shorterPath = pathToCharacter;
+				finalPath = shorterPath;
+				CharacterTarget = AliveCharacters[i];		
 			}
-			else if(pathToCharacter.Count < shorterPath.Count)
-			{
-				shorterPath = pathToCharacter;
-			}
+		}
+		
+		if(finalPath == null)
+		{
+			MovingEnemy = false;
+			EnemyAttacking = false;
+			CurrentEnemy.alreadyMoved = true;
+			return;
 		}
 
 		if(shorterPath.Count <= 0)
@@ -157,7 +168,7 @@ public class EnemyController : MonoBehaviour {
 			EnemyAttacking = true;
 			CurrentEnemy.alreadyMoved = true;
 			return;
-		}
+		}	
 		
 		CurrentTarget.x = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].xCoord;
 		CurrentTarget.z = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].yCoord;
@@ -192,6 +203,7 @@ public class EnemyController : MonoBehaviour {
 #endregion
 
 
+	/*
 	void OnDrawGizmos()
 	{
 		if(shorterPath == null)
@@ -202,6 +214,6 @@ public class EnemyController : MonoBehaviour {
 			pos.y = 1;
 			Gizmos.DrawCube(pos, Vector3.one);
 		}
-	
 	}
+	 */
 }
