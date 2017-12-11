@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour {
 		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
 		CharacterSheetTexts[2].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.Life.ToString();
 		CharacterSheetTexts[3].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.CurrentWeaponSelected.Name;
+		CharacterSheetTexts[4].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.CurrentAttacksPerTurn.ToString();
 	}
 
 	public void ChangeWeapon()

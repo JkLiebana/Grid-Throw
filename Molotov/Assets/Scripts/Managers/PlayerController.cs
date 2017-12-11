@@ -198,6 +198,7 @@ public class PlayerController : MonoBehaviour {
 	private void Attack(Transform target)
 	{
 		CurrentCharacterSelected.CurrentAttacksPerTurn -= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost;
+		MainManager.Instance._UIManager.RefreshCharacterInfo();
 
 		var weapon = MainManager.Instance._PoolingManager.SpawnWeapon(CurrentCharacterSelected.CurrentWeaponSelected);
 		weapon.gameObject.transform.position = CurrentCharacterSelected.transform.position;

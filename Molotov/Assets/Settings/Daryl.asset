@@ -17,7 +17,7 @@ MonoBehaviour:
   Name: Daryl
   Speed: 6
   Life: 10
-  MaxAttacksPerTurn: 4
+  MaxAttacksPerTurn: 3
   maxCellsMovement: 1
   Weapons:
   - {fileID: 11400000, guid: f24cd24c63682d747970dcc7a0b13487, type: 2}
