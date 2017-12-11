@@ -170,8 +170,8 @@ public class EnemyController : MonoBehaviour {
 			return;
 		}	
 		
-		CurrentTarget.x = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].xCoord;
-		CurrentTarget.z = shorterPath[shorterPath.Count - CurrentEnemy.maxCellsMovement].yCoord;
+		CurrentTarget.x = shorterPath[shorterPath.Count - Mathf.Clamp(CurrentEnemy.maxCellsMovement, 0, shorterPath.Count)].xCoord;
+		CurrentTarget.z = shorterPath[shorterPath.Count - Mathf.Clamp(CurrentEnemy.maxCellsMovement, 0, shorterPath.Count)].yCoord;
 
 		MovingEnemy = true;
 	}
@@ -201,19 +201,4 @@ public class EnemyController : MonoBehaviour {
 		}
 	}
 #endregion
-
-
-	/*
-	void OnDrawGizmos()
-	{
-		if(shorterPath == null)
-			return;
-		foreach(Tile t in shorterPath)
-		{
-			var pos = t.transform.position;
-			pos.y = 1;
-			Gizmos.DrawCube(pos, Vector3.one);
-		}
-	}
-	 */
 }

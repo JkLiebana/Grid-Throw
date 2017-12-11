@@ -1139,6 +1139,7 @@ GameObject:
   - component: {fileID: 1050679154}
   - component: {fileID: 1050679153}
   - component: {fileID: 1050679152}
+  - component: {fileID: 1050679151}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1146,6 +1147,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1050679151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1050679150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37af73f3507bef6489488f93689a6752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panSpeed: 20
+  panBorderThickness: 10
+  scrollSpeed: 10
+  minPositionX: -8
+  maxPositionX: 15
+  minPositionY: -10
+  maxPositionY: 1
 --- !u!81 &1050679152
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1210,7 +1229,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1050679150}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 5, y: 8, z: -3.5}
+  m_LocalPosition: {x: 5, y: 8, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2667,7 +2686,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 000
+  m_Text: '0
+
+'
 --- !u!222 &1852621599
 CanvasRenderer:
   m_ObjectHideFlags: 0
