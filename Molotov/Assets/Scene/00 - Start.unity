@@ -150,7 +150,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 5
-  TileMap: {fileID: 1524900629545212, guid: 79f1dcc7cd4be4b4f9618410b8da8ab7, type: 2}
   Tiles: []
 --- !u!1 &695567091
 GameObject:

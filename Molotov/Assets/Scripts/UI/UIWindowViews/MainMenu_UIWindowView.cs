@@ -14,7 +14,7 @@ public class MainMenu_UIWindowView : UIWindowView {
 	{
 		SceneManager.sceneLoaded += OnSceneLoad;
 		MainManager.Instance._UIManager.GoToWindow(NextWindowController);		
-		asyncLoad = SceneManager.LoadSceneAsync(NextScene.name, LoadSceneMode.Single);
+		SceneManager.LoadScene(2, LoadSceneMode.Single);
 	}
 
 	IEnumerator LoadSceneAsync()
@@ -28,7 +28,7 @@ public class MainMenu_UIWindowView : UIWindowView {
 
 	void OnSceneLoad(Scene scene, LoadSceneMode mode)
 	{
-		if(scene.name == NextScene.name)
+		if(scene.buildIndex == 2)
 		{
 			ActionPhaseManager.Instance.Initialize();
 			SceneManager.sceneLoaded -= OnSceneLoad;
