@@ -21,7 +21,7 @@ public class Weapon : MonoBehaviour {
 	public virtual IEnumerator DestroyWeapon()
 	{
 		yield return new WaitForSeconds(2);
-		MainManager.Instance._PlayerController.characterAttacking = false;
+		MainManager.Instance._ActionPhaseManager._PlayerController.characterAttacking = false;
 
 		MainManager.Instance._PoolingManager.DespawnWeapon(this);
 	}

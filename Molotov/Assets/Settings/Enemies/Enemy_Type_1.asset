@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Enemy_Type_1
   m_EditorClassIdentifier: 
   Life: 3
-  Movements: 1
+  Movements: 2
   Speed: 5
   Damage: 1
   EnemyPrefab: {fileID: 1081424464692966, guid: b90db21617580074abb2856df039ef4a,

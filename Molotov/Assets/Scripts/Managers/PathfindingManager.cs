@@ -9,8 +9,8 @@ public class PathfindingManager : MonoBehaviour {
 	private bool canDraw = false;
 	public List<Tile> FindPath(Transform origin, Transform target)
 	{
-		Tile startTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == origin.position.x && tile.yCoord == origin.position.z);
-		Tile targetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == target.position.x && tile.yCoord == target.position.z);
+		Tile startTile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == origin.position.x && tile.yCoord == origin.position.z);
+		Tile targetTile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == target.position.x && tile.yCoord == target.position.z);
 
 		openSet = new List<Tile>();
 		closedSet = new HashSet<Tile>();
@@ -97,6 +97,7 @@ public class PathfindingManager : MonoBehaviour {
 		}
 	}
 
+	/*
 	void OnDrawGizmos() {
 		
 		var size = new Vector3(0.5f, 1, 0.5f);
@@ -120,4 +121,5 @@ public class PathfindingManager : MonoBehaviour {
 
 
 	}
+	 */
 }

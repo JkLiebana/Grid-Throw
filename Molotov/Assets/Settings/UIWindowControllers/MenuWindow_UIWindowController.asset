@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32658b85e109eb448b8d723c7950f9df, type: 3}
+  m_Name: MenuWindow_UIWindowController
+  m_EditorClassIdentifier: 
+  Name: Menu Window
+  WindowView: {fileID: 114743706551442916, guid: 907fb9a2668be2a48887eb3d3e45891a,
+    type: 2}

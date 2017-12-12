@@ -2,65 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainManager : Singleton<MainManager>{
+public class MainManager : Singleton<MainManager> {
 
-
-	public MapGenerator _MapGenerator;
-	public UIManager _UIManager;
-	public PlayerController _PlayerController;
-	public EnemyController _EnemyController;
 	public PoolingManager _PoolingManager;
-	public PathfindingManager _PathfindingManager;
+	public UIManager _UIManager;
+	public GameDirector _GameDirector;
 
-	public int CurrentTurn = 0;
 
-	public bool EnemyTurn = false;
-	public bool isGameOver = false;
+	public ActionPhaseManager _ActionPhaseManager;
 
 	void Start()
 	{
-		isGameOver = false;
-		
-		//_PathfindingManager = new PathfindingManager();
-		_PoolingManager.Initialize();
-		_MapGenerator.Initialize();
+		DontDestroyOnLoad(this.gameObject);
+
 		_UIManager.Initialize();
-		_PlayerController.Initialize();
-		_EnemyController.Initialize();
-	}	
-	public void StartEnemyTurn()
-	{
-		EnemyTurn = true;
-	}
-	public void FinishEnemyTurn()
-	{
-		EnemyTurn = false;
-		NextTurn();
-	}
-	IEnumerator ProcessEnemyTurn()
-	{
-		yield return new WaitForSeconds(3);
-		NextTurn();
-	}
+		_PoolingManager.Initialize();
+		_GameDirector.LoadMenu();
 
-	public void NextTurn()
-	{
-		CurrentTurn++;
-		EnemyTurn = false;
-		_UIManager.DisableEnemyTurnText();
-		_PlayerController.ResetMovementsAndAttacks();
-
-		_UIManager.turnsNumber.text = MainManager.Instance.CurrentTurn.ToString();
-		_UIManager.RefreshCharacterInfo();
-		_EnemyController.ResetEnemies();
-	}
-
-	public void GameOver()
-	{
-		isGameOver = true;
-		_UIManager.DisableEnemyTurnText();
-		_UIManager.EnableGameOverText();
-		_EnemyController.GameOver();
 	}
 
 }

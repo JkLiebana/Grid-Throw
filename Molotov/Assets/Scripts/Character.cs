@@ -19,8 +19,8 @@ public class Character : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		if(!MainManager.Instance.EnemyTurn)
-			MainManager.Instance._PlayerController.SetCurrentCharacter(this);
+		if(!MainManager.Instance._ActionPhaseManager.EnemyTurn)
+			MainManager.Instance._ActionPhaseManager._PlayerController.SetCurrentCharacter(this);
 	}
 
 	public void RecieveDamage(int damageRecieved, Tile tile)
@@ -28,19 +28,19 @@ public class Character : MonoBehaviour {
 		if(Life - damageRecieved <= 0)
 		{
 			Life = 0;
-			MainManager.Instance._PlayerController.AliveCharacters.Remove(this);
+			MainManager.Instance._ActionPhaseManager._PlayerController.AliveCharacters.Remove(this);
 			tile.CharacterOnTile = null;
 			//tile.isOccupiedByCharacter = false;
 			tile.walkable = true;
 
-			if(MainManager.Instance._PlayerController.AliveCharacters.Count <= 0)
+			if(MainManager.Instance._ActionPhaseManager._PlayerController.AliveCharacters.Count <= 0)
 			{
-				MainManager.Instance.GameOver();
+				MainManager.Instance._ActionPhaseManager.GameOver();
 				MainManager.Instance._PoolingManager.DespawnCharacter(this);
 				return;
 			}
 			
-			MainManager.Instance._PlayerController.CurrentCharacterSelected = MainManager.Instance._PlayerController.AliveCharacters[0];
+			MainManager.Instance._ActionPhaseManager._PlayerController.CurrentCharacterSelected = MainManager.Instance._ActionPhaseManager._PlayerController.AliveCharacters[0];
 			MainManager.Instance._PoolingManager.DespawnCharacter(this);
 					}
 		else

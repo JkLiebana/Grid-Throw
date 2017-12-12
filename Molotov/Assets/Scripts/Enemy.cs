@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour {
 	{
 		if(Life - Damage <= 0)
 		{
-			var tile = MainManager.Instance._MapGenerator.Tiles.Find(_tile => _tile.xCoord == transform.position.x && _tile.yCoord == transform.position.z);
+			var tile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(_tile => _tile.xCoord == transform.position.x && _tile.yCoord == transform.position.z);
 			
 			if(tile != null)
 			{
@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour {
 				tile.walkable = true;
 			}
 			
-			MainManager.Instance._EnemyController.EnemyKilled(this);
+			MainManager.Instance._ActionPhaseManager._EnemyController.EnemyKilled(this);
 			MainManager.Instance._PoolingManager.DespawnEnemy(this);
 		}
 

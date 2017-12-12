@@ -55,7 +55,7 @@ public class Molotov : Weapon {
 		{
 			target.gameObject.GetComponent<Enemy>().RecieveDamage(Damage);
 		}
-		MainManager.Instance._PlayerController.characterAttacking = false;
+		MainManager.Instance._ActionPhaseManager._PlayerController.characterAttacking = false;
 		MainManager.Instance._PoolingManager.DespawnWeapon(this);
 	}
 }

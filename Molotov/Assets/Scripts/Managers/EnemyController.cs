@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour {
 	{
 		AliveEnemies = new List<Enemy>();
 
-		Vector3 EnemyPosition = new Vector3(MainManager.Instance._MapGenerator.width, 0, MainManager.Instance._MapGenerator.height);
+		Vector3 EnemyPosition = new Vector3(ActionPhaseManager.Instance._MapGenerator.width, 0, ActionPhaseManager.Instance._MapGenerator.height);
 		for(int i = 0; i < Enemies.Count; i++)
 		{			
 			var enemy = MainManager.Instance._PoolingManager.SpawnEnemy(Enemies[i]);
@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour {
 
 	void Update()
 	{
-		if(!MainManager.Instance.EnemyTurn || MainManager.Instance.isGameOver)
+		if(!MainManager.Instance._ActionPhaseManager.EnemyTurn || MainManager.Instance._ActionPhaseManager.isGameOver)
 			return;
 		
 		if(MovingEnemy)
@@ -93,9 +93,9 @@ public class EnemyController : MonoBehaviour {
 
 	private void CheckIfPossibleAttack()
 	{
-		var currentTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentEnemy.transform.position.x && t.yCoord == CurrentEnemy.transform.position.z);
+		var currentTile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CurrentEnemy.transform.position.x && t.yCoord == CurrentEnemy.transform.position.z);
 
-		var characterTile = MainManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CharacterTarget.transform.position.x && t.yCoord == CharacterTarget.transform.position.z);
+		var characterTile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(t => t.xCoord == CharacterTarget.transform.position.x && t.yCoord == CharacterTarget.transform.position.z);
 
 		if(currentTile.GetNeighbours().Contains(characterTile))
 		{
@@ -125,21 +125,21 @@ public class EnemyController : MonoBehaviour {
 				return;
 			}
 		}
-		MainManager.Instance.FinishEnemyTurn();
+		MainManager.Instance._ActionPhaseManager.FinishEnemyTurn();
 	}
 
 	private List<Tile> pathToCharacter, shorterPath, finalPath;
 	private Vector3 dibuja;
 	private void SetCurrentTargetAndPath()
 	{
-		var AliveCharacters = MainManager.Instance._PlayerController.AliveCharacters; 
+		var AliveCharacters = MainManager.Instance._ActionPhaseManager._PlayerController.AliveCharacters; 
 		pathToCharacter = new List<Tile>(); 
-		shorterPath = new List<Tile>(MainManager.Instance._MapGenerator.Tiles);
+		shorterPath = new List<Tile>(ActionPhaseManager.Instance._MapGenerator.Tiles);
 		finalPath = null;
 		
 		for(int i = 0; i < AliveCharacters.Count; i++)
 		{
-			pathToCharacter = MainManager.Instance._PathfindingManager.FindPath(CurrentEnemy.transform, AliveCharacters[i].transform);
+			pathToCharacter = MainManager.Instance._ActionPhaseManager._PathfindingManager.FindPath(CurrentEnemy.transform, AliveCharacters[i].transform);
 			
 			if(pathToCharacter == null)
 			{
@@ -197,7 +197,7 @@ public class EnemyController : MonoBehaviour {
 		AliveEnemies.Remove(enemy);
 		if(AliveEnemies.Count <= 0)
 		{
-			MainManager.Instance.GameOver();
+			MainManager.Instance._ActionPhaseManager.GameOver();
 		}
 	}
 #endregion

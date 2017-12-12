@@ -5,14 +5,12 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour {
 
 	public int width, height;
-	public GameObject TileMap;
-	public GameObject Map;
-
 	public List<Tile> Tiles;
 	
 
 	public void Initialize()
 	{
+		Tiles = new List<Tile>();
 		GenerateMap();
 	}
 
@@ -23,12 +21,10 @@ public class MapGenerator : MonoBehaviour {
 		{
 			for(int j = 0; j <= height; j++)
 			{
-				var cellGameObject = Instantiate(TileMap);
-				var cell = cellGameObject.GetComponent<Tile>();
+				var cell = MainManager.Instance._PoolingManager.SpawnTile();
 				
 				tilePosition = new Vector3(i, -1f, j);
-				cellGameObject.transform.position = tilePosition;
-				cellGameObject.transform.SetParent(Map.transform, true);
+				cell.gameObject.transform.position = tilePosition;
 
 				cell.xCoord = i;
 				cell.yCoord = j;			

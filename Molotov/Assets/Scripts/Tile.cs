@@ -15,6 +15,9 @@ public class Tile : MonoBehaviour {
 		}
 	}
 
+	[HideInInspector]
+	public bool Alive = false;
+
 	void Start()
 	{
 		walkable = true;
@@ -25,8 +28,8 @@ public class Tile : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		if(!MainManager.Instance.EnemyTurn)
-			MainManager.Instance._PlayerController.SetNewTarget(gameObject.transform);
+		if(!MainManager.Instance._ActionPhaseManager.EnemyTurn)
+			MainManager.Instance._ActionPhaseManager._PlayerController.SetNewTarget(gameObject.transform);
 	}
 
 	void OnTriggerStay(Collider other)
@@ -67,17 +70,36 @@ public class Tile : MonoBehaviour {
 				int finalX = xCoord + i;
 				int finalY = yCoord + j;
 
-				int mapWidth = MainManager.Instance._MapGenerator.width;
-				int mapHeight = MainManager.Instance._MapGenerator.height;
+				int mapWidth = ActionPhaseManager.Instance._MapGenerator.width;
+				int mapHeight = ActionPhaseManager.Instance._MapGenerator.height;
 				
 				if(finalX >= 0 && finalX <= mapWidth && finalY >= 0 && finalY <= mapHeight)
 				{	
-					var tile = MainManager.Instance._MapGenerator.Tiles.Find(_t => _t.xCoord == finalX && _t.yCoord == finalY);
+					var tile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(_t => _t.xCoord == finalX && _t.yCoord == finalY);
 					neighbours.Add(tile);
 				}				
 			}
 		}
 
 		return neighbours;
+	}
+
+	public void Revive()
+	{
+		Alive = true;
+		gameObject.SetActive(true);
+	}
+
+	public void Kill()
+	{
+		gCost = 0;
+		hCost = 0;
+		walkable = true;
+		CharacterOnTile = null;
+		xCoord = 0;
+		yCoord = 0;
+
+		Alive = false;
+		gameObject.SetActive(false);
 	}
 }

@@ -1,109 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
-	public Text farText, closeText, turnsNumber, movingText, enemyTurnText, occupiedText, gameOverText;
+	public List<UIWindowController> Windows;
+	public Canvas MainCanvas;
 
-	public Text[] CharacterSheetTexts;
-	
+	private List<UIWindowView> InstantiatedWindows;
+
+	private Canvas MainCanvasInstance;
+	public UIWindowController CurrentWindow;
+
 	public void Initialize()
 	{
-		DisableAllWarnings();
-		DisableMovingText();
-		DisableEnemyTurnText();
-		DisableGameOverText();
+		InstantiatedWindows = new List<UIWindowView>();
+
+		InstantiateAllWindows();
+		for(int i = 0; i < InstantiatedWindows.Count; i++)
+		{
+			InstantiatedWindows[i].InitializeView(Windows[i].name);
+		}
+
+		InstantiatedWindows[0].EnableView();
+		CurrentWindow = Windows[0];
 	}
 
-	public void NextTurn()
+	private void InstantiateAllWindows()
 	{
-		if(MainManager.Instance.EnemyTurn || MainManager.Instance._PlayerController.characterAttacking)
-			return;
-			
-		MainManager.Instance.StartEnemyTurn();
-		EnableEnemyTurnText();
+		MainCanvasInstance = Instantiate(MainCanvas, Vector3.zero, Quaternion.identity);
+		MainCanvasInstance.transform.SetParent(gameObject.transform);
+		MainCanvasInstance.name = "MainCanvas";
+
+		for(int i = 0; i < Windows.Count; i++)
+		{
+			var window = Instantiate(Windows[i].WindowView.gameObject, Vector3.zero, Quaternion.identity);
+			window.transform.SetParent(MainCanvasInstance.transform, false);
+			window.name = Windows[i].Name;
+			InstantiatedWindows.Add(window.GetComponent<UIWindowView>());
+		}
 	}
 
-	public void RefreshCharacterInfo()
+	public void GoToWindow(UIWindowController nextWindow)
 	{
-		CharacterSheetTexts[0].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.name;
-		CharacterSheetTexts[1].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.movementsLeft.ToString();
-		CharacterSheetTexts[2].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.Life.ToString();
-		CharacterSheetTexts[3].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.CurrentWeaponSelected.Name;
-		CharacterSheetTexts[4].text = MainManager.Instance._PlayerController.CurrentCharacterSelected.CurrentAttacksPerTurn.ToString();
+		CloseAllWindows();
+		UIWindowView view = InstantiatedWindows.Find(w => nextWindow.Name == w.name);
+		view.EnableView();
+		CurrentWindow = nextWindow;
 	}
 
-	public void ChangeWeapon()
+	private void CloseAllWindows()
 	{
-		MainManager.Instance._PlayerController.ChangeWeapon();
-		RefreshCharacterInfo();
+		for(int i = 0; i < Windows.Count; i++)
+		{
+			InstantiatedWindows[i].DisableView();
+		}
 	}
-
-#region Enable Text
-	public void EnableFarText()
-	{
-		farText.enabled = true;
-		StartCoroutine(Wait(0));
-	}
-
-	public void EnableCloseText()
-	{
-		closeText.enabled = true;
-		StartCoroutine(Wait(1));		
-	}
-
-	public void EnableOccupiedText()
-	{
-		occupiedText.enabled = true;
-		StartCoroutine(Wait(1));		
-	}
-
-	public void EnableMovingText()
-	{
-		movingText.enabled = true;
-	}
-
-	public void EnableEnemyTurnText()
-	{
-		enemyTurnText.enabled = true;
-	}
-
-	public void EnableGameOverText()
-	{
-		gameOverText.enabled = true;
-	}
-
-#endregion
-	
-#region Disable Text
-	public void DisableAllWarnings()
-	{
-		occupiedText.enabled = false;
-		closeText.enabled = false;
-		farText.enabled = false;		
-	}	
-
-	public void DisableMovingText()
-	{
-		movingText.enabled = false;
-	}
-
-	public void DisableEnemyTurnText()
-	{
-		enemyTurnText.enabled = false;
-	}
-	
-	public void DisableGameOverText()
-	{
-		gameOverText.enabled = false;
-	}
-	private IEnumerator Wait(int option)
-	{
-		yield return new WaitForSeconds(1);
-		DisableAllWarnings();
-	}
-#endregion
-
 }

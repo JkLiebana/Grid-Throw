@@ -6,10 +6,14 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
 #region Public Variables
-	public GameObject MolotovPrefab;
+
+	[HideInInspector]
 	public bool movingCharacter = false;
+	
+	[HideInInspector]
 	public bool characterAttacking = false;
 	
+	[HideInInspector]
 	public Character CurrentCharacterSelected;
 	public List<CharacterInfo> AvailableCharacters; 
 
@@ -39,7 +43,6 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		CurrentCharacterSelected = AliveCharacters[0];
-		MainManager.Instance._UIManager.RefreshCharacterInfo();
 	}
 
 	void Update () 
@@ -49,7 +52,7 @@ public class PlayerController : MonoBehaviour {
 			Application.Quit();
 		}
 
-		if(MainManager.Instance.EnemyTurn || MainManager.Instance.isGameOver)
+		if(MainManager.Instance._ActionPhaseManager.EnemyTurn || MainManager.Instance._ActionPhaseManager.isGameOver)
 			return;
 
 		Movement();
@@ -87,14 +90,14 @@ public class PlayerController : MonoBehaviour {
 			return;
 
 		CurrentCharacterSelected = character;
-		MainManager.Instance._UIManager.RefreshCharacterInfo();
+		ActionPhaseManager.Instance.ActionPhaseWindowView.RefreshCharacterInfo();
 	}
 
 	public void SetNewTarget(Transform target)
 	{
 		if(CheckIfTargetOccupied(target.position))
 		{
-			MainManager.Instance._UIManager.EnableOccupiedText();
+			ActionPhaseManager.Instance.ActionPhaseWindowView.EnableOccupiedText();
 			return;
 		}
 
@@ -137,7 +140,7 @@ public class PlayerController : MonoBehaviour {
 #region Internal Movement Utilities
 	private bool CheckIfTargetOccupied(Vector3 possibleTargetPosition)
 	{
-		var possibleTargetTile = MainManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == possibleTargetPosition.x && tile.yCoord == possibleTargetPosition.z);
+		var possibleTargetTile = ActionPhaseManager.Instance._MapGenerator.Tiles.Find(tile => tile.xCoord == possibleTargetPosition.x && tile.yCoord == possibleTargetPosition.z);
 		return !possibleTargetTile.walkable;
 	}
 
@@ -153,8 +156,8 @@ public class PlayerController : MonoBehaviour {
 		
 		movingCharacter = true;
 
-		MainManager.Instance._UIManager.EnableMovingText();		
-		MainManager.Instance._UIManager.RefreshCharacterInfo();		
+		ActionPhaseManager.Instance.ActionPhaseWindowView.EnableMovingText();		
+		ActionPhaseManager.Instance.ActionPhaseWindowView.RefreshCharacterInfo();		
 	}
 
 	private void CheckIfPositionReached()
@@ -168,7 +171,7 @@ public class PlayerController : MonoBehaviour {
 			finalPosition.y = 0;
 			CurrentCharacterSelected.gameObject.transform.position = finalPosition;
 			movingCharacter = false;
-			MainManager.Instance._UIManager.DisableMovingText();
+			ActionPhaseManager.Instance.ActionPhaseWindowView.DisableMovingText();
 		}
 	}
 
@@ -183,11 +186,11 @@ public class PlayerController : MonoBehaviour {
 
 		if(distance.magnitude < CurrentCharacterSelected.CurrentWeaponSelected.minRange)
 		{
-			MainManager.Instance._UIManager.EnableCloseText();			
+			ActionPhaseManager.Instance.ActionPhaseWindowView.EnableCloseText();			
 		}
 		else if(distance.magnitude >= CurrentCharacterSelected.CurrentWeaponSelected.maxRange)
 		{
-			MainManager.Instance._UIManager.EnableFarText();			
+			ActionPhaseManager.Instance.ActionPhaseWindowView.EnableFarText();			
 		}
 		else if(CurrentCharacterSelected.CurrentAttacksPerTurn >= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost)
 		{
@@ -198,7 +201,7 @@ public class PlayerController : MonoBehaviour {
 	private void Attack(Transform target)
 	{
 		CurrentCharacterSelected.CurrentAttacksPerTurn -= CurrentCharacterSelected.CurrentWeaponSelected.AttackCost;
-		MainManager.Instance._UIManager.RefreshCharacterInfo();
+		ActionPhaseManager.Instance.ActionPhaseWindowView.RefreshCharacterInfo();
 
 		var weapon = MainManager.Instance._PoolingManager.SpawnWeapon(CurrentCharacterSelected.CurrentWeaponSelected);
 		weapon.gameObject.transform.position = CurrentCharacterSelected.transform.position;
